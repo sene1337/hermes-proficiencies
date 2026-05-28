@@ -158,7 +158,7 @@ Support files are the deeper layers of this skill. Load only the selected mode p
 - `references/tidy-workspace-support-map.md` — quick map of all support files.
 - `references/modes/normal-workspace-hygiene.md` — ordinary workspace/git edits and file routing.
 - `references/modes/protected-wiki.md` — protected wiki read-only default and write approval gate.
-- `references/modes/skill-source-runtime-hygiene.md` — Hermes skill source/runtime, artifact-class category, duplicate, and private repo rules.
+- `references/modes/skill-source-runtime-hygiene.md` — Hermes skill source/runtime, artifact-type category, duplicate, and private repo rules.
 - `references/modes/destructive-operations.md` — delete/overwrite/bulk operation guardrails.
 - `references/modes/file-janitor-audit.md` — temp sweep, orphan-file, stale review-bundle, and non-canonical residue classification/escalation mode.
 - `templates/workspace-verification-checklist.md` — evidence checklist for final answers.

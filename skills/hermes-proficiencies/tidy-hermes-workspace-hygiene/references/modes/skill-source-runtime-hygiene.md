@@ -22,8 +22,8 @@ Required behavior:
 - After skill edits, review `git diff` in `~/.hermes/skills/` and commit durable private skill-library changes.
 - Before any public GitHub push/publish, load and follow `thorough-hermes-skill-publishing`; never push the full private runtime skill library publicly.
 - For ignored hub/bundled skills, do not patch them as durable local source unless the user explicitly decides to bring that skill into the tracked private runtime library.
-- Use `tool skills` as the plain-language default for skills that teach Hermes a tool, CLI, API, platform, vault, account, or local workflow. Use `soulbound skills` as the thematic label for private/local tool skills bound to the user's vaults, accounts, machines, paths, and workflows. Use `Hermes proficiencies` for public/shareable behavior or attribute skills. Avoid `runtime skills` as a class name because all installed skills are runtime-loaded.
-- Keep artifact type distinct from publication status: a private proficiency is still a proficiency; a soulbound/tool skill is still a tool skill; public-bound work requires export/review even if the working copy lives in runtime git.
+- Use `tool skills` as the plain-language default for skills that teach Hermes a tool, CLI, API, platform, vault, account, or local workflow. Use `private/local tool skills` for tool skills bound to the user's vaults, accounts, machines, paths, and workflows. Use `Hermes proficiencies` for public/shareable behavior or attribute skills. Avoid `runtime skills` as a category name because all installed skills are runtime-loaded.
+- Keep artifact type distinct from publication status: a private proficiency is still a proficiency; a private/local tool skill is still a tool skill; public-bound work requires export/review even if the working copy lives in runtime git.
 
 ### 3. Runtime Skill Category Selection Rule
 
@@ -35,12 +35,12 @@ Category decision flow:
 
 ```text
 Human-facing Playbook/SOP:
-  usually not installed as a runtime skill unless Hermes is being taught to create/review that artifact class;
+  usually not installed as a runtime skill unless Hermes is being taught to create/review that artifact type;
   use an intentional human-operations/docs/playbooks category only after a category decision.
 
 Tool SOP Skill:
   place under the concrete tool/domain category (devops, productivity, note-taking, media, github, etc.);
-  private/local-account-bound Tool SOPs may be called soulbound, but the runtime folder should still describe the tool/domain.
+  private/local-account-bound Tool SOPs should still use a runtime folder that describes the tool/domain.
 
 Agent Skill serving a domain:
   place under the operating domain the behavior serves, not the source folder, current project, or authoring context.

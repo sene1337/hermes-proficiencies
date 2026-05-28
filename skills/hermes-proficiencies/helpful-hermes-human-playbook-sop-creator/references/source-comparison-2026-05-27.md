@@ -17,7 +17,7 @@ The Hermes skill preserved the broad structure, but the first conversion softene
 
 ## High-value source details to preserve
 
-- Owner / Reviewer / Review Cadence should be first-class fields, not buried in prose.
+- Owner / Reviewer / Review Cadence should be core fields, not buried in prose.
 - Playbooks should be copy-paste executable: if the operator cannot directly follow a checklist, template, script, framework, or artifact, the playbook is too theoretical.
 - Principles can be marked `TBD — refine after first 3 executions` for v1.0 when the domain is still forming. Do not invent fake principles to look complete.
 - SOP source methods matter:

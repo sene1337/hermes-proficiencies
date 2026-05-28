@@ -218,11 +218,11 @@ Detailed rubric, score bands, locked-evaluator rule, score sheet, and parent-fee
 
 When the user asks to update the skill library after a session, be active by default.
 
-- Prefer patching a loaded or governing class-level skill before creating a new narrow skill.
-- Treat user corrections about style, format, verbosity, workflow, sequencing, or tool boundaries as first-class skill signals. Patch the governing skill body so the next session starts with the corrected behavior; memory alone is not enough.
+- Prefer patching a loaded or governing reusable skill before creating a new narrow skill.
+- Treat user corrections about style, format, verbosity, workflow, sequencing, or tool boundaries as strong skill signals. Patch the governing skill body so the next session starts with the corrected behavior; memory alone is not enough.
 - Capture reusable procedure/pitfall, not session narrative or transient task progress.
 - If the user says the session was poisoned, compacted, or context was lost, stop extending the trajectory until the exact active step/scope is recovered. If recovery is not confident, ask before editing files, committing, publishing, deleting, or marking work complete.
-- Obey explicit tool constraints literally. Do not call denied tool classes and do not claim git/diff/source-runtime validation unless actually checked or visible in context.
+- Obey explicit tool constraints literally. Do not call denied tool types and do not claim git/diff/source-runtime validation unless actually checked or visible in context.
 - When the user restricts a skill-library update pass to memory and skill-management tools, treat that as excluding unrelated planning, search, shell, file, git, validation, and todo tools. Use visible conversation context plus loaded skill content; patch through `skill_manage`; report validation/git evidence as deferred or already visible only if it is actually visible.
 - Under a constrained curation surface, still make narrow useful skill patches through allowed tools rather than stalling on unavailable verification.
 - If nothing genuinely reusable emerged, say `Nothing to save.`
@@ -249,7 +249,7 @@ Support files for this skill:
 - `references/eval-cases.md` — eval cases for this skill and model cases for new skills.
 - `references/failure-modes.md` — long failure-mode checklist for deeper reviews.
 - `references/support-file-format-guide.md` — support-file formats, mode-router pattern, and gradient design.
-- `references/private-skill-taxonomy.md` — private taxonomy, artifact-class/category decision flow, source placement, naming, attribution, and public-export wording hygiene.
+- `references/private-skill-taxonomy.md` — private taxonomy, artifact-type/category decision flow, source placement, naming, attribution, and public-export wording hygiene.
 - `references/playbook-sop-skill-artifact-map.md` — map across Playbooks, SOPs, Tool SOPs, Review Protocols, and Hermes skills.
 - `references/credential-tool-sop-porting-notes.md` — credential/secret-vault Tool SOP porting guardrails.
 - `references/agent-skill-native-guidance.md` — source guidance from Agent Skills / Claude Code / GPT-5 / Agents research.
@@ -273,7 +273,7 @@ Top failures to prevent on the default path:
 8. **Verification overclaim.** Fix: report only evidence actually checked.
 9. **Private material in public export.** Fix: run publishing workflow and strip internal changelogs/private context.
 10. **Observed failures stay local.** Fix: patch the governing skill.
-11. **Passive curation under tool constraints.** Fix: when the user limits the curation pass to memory and skill-management tools, still patch the loaded/class-level skill through `skill_manage`; report deferred git/diff/validation instead of doing nothing or attempting denied tools.
+11. **Passive curation under tool constraints.** Fix: when the user limits the curation pass to memory and skill-management tools, still patch the loaded/reusable skill through `skill_manage`; report deferred git/diff/validation instead of doing nothing or attempting denied tools.
 12. **Tool-surface leakage during curation.** Fix: if the prompt says only memory and skill-management tools are allowed, do not call `todo`, `session_search`, shell/git/file validation, or other helper tools even if they would normally improve process discipline. Use visible context and make the smallest safe skill patch.
 13. **Post-compaction assumption.** Fix: after compaction/context loss, do not infer missing numbered steps from adjacent topics. Re-anchor from visible context and allowed recovery tools; if exact step/scope is still uncertain, ask the user before any file edit, commit, publish/delete action, or completion claim.
 

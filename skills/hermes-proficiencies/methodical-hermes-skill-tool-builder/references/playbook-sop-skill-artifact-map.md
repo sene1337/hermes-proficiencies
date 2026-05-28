@@ -35,8 +35,8 @@ Agent Skill / Proficiency
 
 Review Protocol
   Operator: human, agent, or both depending on target
-  Purpose: scoring/control loop for an artifact class
-  Governing skill: attach to the artifact class being scored; use both human and agent standards when the target crosses the boundary
+  Purpose: scoring/control loop for an artifact type
+  Governing skill: attach to the artifact type being scored; use both human and agent standards when the target crosses the boundary
   Score against: the target artifact standard + locked-evaluator rule
 ```
 
@@ -60,10 +60,10 @@ If the output does both:
 
 ## Meta-skill pattern
 
-When the user asks for “a skill that teaches Hermes how to create playbook skills, SOP skills, Tool SOP skills, and score them,” treat it as a **class-level meta-skill** problem:
+When the user asks for “a skill that teaches Hermes how to create playbook skills, SOP skills, Tool SOP skills, and score them,” treat it as a **reusable meta-skill** problem:
 
 1. Classify the artifact family first: human-facing, agent-runtime, tool-runtime, review/scoring, or mixed.
-2. Keep the class-level standard in a rich `SKILL.md`.
+2. Keep the reusable standard in a rich `SKILL.md`.
 3. Put session-specific source comparisons, imported source examples, score sheets, and taxonomy notes in `references/`.
 4. Put copyable artifact starters in `templates/`.
 5. Put deterministic validators/scorers in `scripts/` only when the process becomes exact and repeated.
@@ -77,7 +77,7 @@ Keep these as pending governance questions until enough imports are visible:
 
 - Which source playbooks become human-facing Hermes proficiencies vs private local Tool SOP skills?
 - Which artifacts should remain human docs rather than skills?
-- Which Tool SOPs are soulbound/private because they depend on the user's accounts, vaults, local machines, iCloud paths, or credentials?
+- Which Tool SOPs are private/local because they depend on the user's accounts, vaults, local machines, iCloud paths, or credentials?
 - Which proficiencies are public/shareable after privacy and portability review?
 - Which review protocols belong inside parent skills vs standalone root standards?
 

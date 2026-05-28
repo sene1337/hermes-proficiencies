@@ -18,7 +18,7 @@ Created on 2026-05-27 when the user split the old `disciplined-hermes-playbook-s
 - Create a skill when the same instruction/checklist/procedure keeps being pasted, or when a project instruction file has become a procedure.
 - Start with evaluation: observe concrete agent failures or repeated tasks, then build skills incrementally.
 - Watch real skill use for over-triggering, under-triggering, bad trajectories, overreliance, and missing context.
-- Scripts/resources are first-class. Use deterministic scripts for repeatable operations when that reduces ambiguity.
+- Scripts/resources are core. Use deterministic scripts for repeatable operations when that reduces ambiguity.
 - Make clear whether code blocks are reference examples or executable commands/scripts.
 
 ## OpenAI GPT-5 / Agents guidance — distilled

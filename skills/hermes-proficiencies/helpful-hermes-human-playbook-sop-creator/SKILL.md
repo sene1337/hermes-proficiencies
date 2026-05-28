@@ -76,7 +76,7 @@ If the artifact teaches an AI agent how to use tools, route skill invocation, ma
   Use methodical-hermes-skill-tool-builder instead. Tool SOPs are mainly agent-facing, even when they borrow SOP formatting.
 
 If the artifact is itself a standard for creating/scoring Playbook/SOP/Tool-SOP skills:
-  Treat it as a class-level meta-skill. Keep human-facing standards here and agent-runtime/tool standards in methodical-hermes-skill-tool-builder; link them rather than blending them.
+  Treat it as a reusable meta-skill. Keep human-facing standards here and agent-runtime/tool standards in methodical-hermes-skill-tool-builder; link them rather than blending them.
 
 If the artifact is tiny, time-sensitive, mechanical, or still in discovery:
   Build a Lightweight SOP Draft, mark it provisional, and do not use it for high-stakes work.
@@ -89,7 +89,7 @@ Treat Playbooks, SOPs, Tool SOPs, and Review Protocols as **skill-shaped operati
 - Human Playbooks and Human SOPs are repeatable skill formats optimized for human comprehension, accountability, and execution.
 - Tool SOPs are mainly for agents: they teach Hermes how to use a tool, API, CLI, repo, account, browser flow, or platform safely under runtime constraints.
 - Review Protocols are scoring/control-loop skills: they define how artifacts are judged, fixed, and re-scored.
-- A “skill that teaches Hermes to create Playbook/SOP/Review Protocol skills” is a meta-skill/class-level builder task. Route human-facing artifact standards here, and route agent-runtime Tool SOP / skill-builder standards to `methodical-hermes-skill-tool-builder`.
+- A “skill that teaches Hermes to create Playbook/SOP/Review Protocol skills” is a meta-skill/reusable builder task. Route human-facing artifact standards here, and route agent-runtime Tool SOP / skill-builder standards to `methodical-hermes-skill-tool-builder`.
 
 Do not collapse these into one generic “documentation skill.” The reusable insight is the shared skill-shaped structure; the operational split is the intended operator and runtime behavior.
 
@@ -486,7 +486,7 @@ Root-standard exception: this standard itself should receive direct human review
 
 14. **Agent-runtime concerns mixed into human docs.** Human docs should mention tools and scripts only as human-operable aids; agent invocation logic belongs in `methodical-hermes-skill-tool-builder`.
 
-14a. **Shared skill shape mistaken for same artifact.** Playbooks, SOPs, Tool SOPs, and Review Protocols can all be skill-shaped repeatable formats, but they are not interchangeable. Classify by primary operator: human comprehension/execution belongs here; agent runtime/tool behavior belongs in `methodical-hermes-skill-tool-builder`; scoring/control loops should attach to the artifact class they govern.
+14a. **Shared skill shape mistaken for same artifact.** Playbooks, SOPs, Tool SOPs, and Review Protocols can all be skill-shaped repeatable formats, but they are not interchangeable. Classify by primary operator: human comprehension/execution belongs here; agent runtime/tool behavior belongs in `methodical-hermes-skill-tool-builder`; scoring/control loops should attach to the artifact type they govern.
 
 15. **Private material leaks into public artifacts.** Load `thorough-hermes-skill-publishing` before any public repo sync.
 

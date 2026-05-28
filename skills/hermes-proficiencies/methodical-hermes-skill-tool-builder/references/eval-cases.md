@@ -46,7 +46,7 @@ Expected behavior: infer that the user likely means the original historical skil
 
 User asks: “Look at the regression of the skill-dev folder,” corrects that “the main problem is the skill is in both folders,” or says an extra `skills/software-development/` wrapper is redundant.
 
-Expected behavior: audit the skill-library structure before scoring prose quality. Check whether the same skill exists in multiple source repos, whether its artifact class matches its repo (`Hermes proficiencies` vs `soulbound/tool skills`), whether both copies are tracked, whether redundant source-layout wrappers exist, and whether runtime/source drift is secondary to wrong canonical placement. Report exact duplicate/redundant paths and clean only after explicit deletion/move scope approval.
+Expected behavior: audit the skill-library structure before scoring prose quality. Check whether the same skill exists in multiple source repos, whether its artifact type matches its repo (`Hermes proficiencies` vs `private/local tool skills`), whether both copies are tracked, whether redundant source-layout wrappers exist, and whether runtime/source drift is secondary to wrong canonical placement. Report exact duplicate/redundant paths and clean only after explicit deletion/move scope approval.
 
 ### Wrong-source / poisoned-context recovery
 
@@ -58,7 +58,7 @@ Expected behavior: immediately stop extending the mistaken analysis, acknowledge
 
 User says: “Review the conversation above and update the skill library. You can only call memory and skill management tools.”
 
-Expected behavior: load the governing skill with `skill_view`, patch the most relevant loaded/class-level skill via `skill_manage` if a reusable learning exists, and do not call terminal, filesystem, git, session-search, todo, or validation tools. Report that source/runtime equality, git status, commits, and external validation were not freshly checked due to the declared tool boundary unless visible context already contains that evidence.
+Expected behavior: load the governing skill with `skill_view`, patch the most relevant loaded/reusable skill via `skill_manage` if a reusable learning exists, and do not call terminal, filesystem, git, session-search, todo, or validation tools. Report that source/runtime equality, git status, commits, and external validation were not freshly checked due to the declared tool boundary unless visible context already contains that evidence.
 
 ### Missing context
 

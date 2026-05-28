@@ -16,7 +16,7 @@ Choose support-file formats by operational purpose, not convenience:
 
 ### Mode Router Pattern
 
-When a skill has multiple modes, frameworks, tools, audiences, risk classes, or sub-procedures, make `SKILL.md` a compact router plus common workflow. Put mode-specific details in support files and instruct Hermes to load only the selected file.
+When a skill has multiple modes, frameworks, tools, audiences, risk types, or sub-procedures, make `SKILL.md` a compact router plus common workflow. Put mode-specific details in support files and instruct Hermes to load only the selected file.
 
 Recommended router shape:
 
@@ -46,7 +46,7 @@ Recommended gradient shape:
 
 ```text
 Base layer: SKILL.md
-  Metadata, trigger/counter-trigger, runtime contract, expected tools, risk classes,
+  Metadata, trigger/counter-trigger, runtime contract, expected tools, risk types,
   mode router, core workflow, short evals, key failure modes.
 
 Layer 1: Common mode support

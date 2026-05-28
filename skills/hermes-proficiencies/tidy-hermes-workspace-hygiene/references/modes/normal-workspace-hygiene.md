@@ -30,7 +30,7 @@ If path is protected iCloud wiki:
   read/search/summarize only unless exact write scope is approved.
 
 If path is ~/.hermes/skills and skill is shareable/important:
-  treat as runtime copy; reconcile back to the correct source repo by skill type: proficiencies repo for Hermes proficiencies, soulbound repo for soulbound/tool skills.
+  treat as runtime copy; reconcile back to the correct source repo by skill type: proficiencies repo for Hermes proficiencies, private/local tool-skill repo for private/local tool skills.
 
 If path is not git-controlled and change is significant:
   flag the lack of git/checkpoint safety and ask before proceeding.

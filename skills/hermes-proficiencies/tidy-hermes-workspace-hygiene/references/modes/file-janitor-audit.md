@@ -14,7 +14,7 @@ Minimum policy inputs:
 
 - workspace taxonomy / organization rules;
 - file-routing SOP or equivalent;
-- audit-artifact classification rules;
+- audit-artifact typeification rules;
 - protected/private path rules;
 - destructive cleanup approval policy.
 
@@ -55,7 +55,7 @@ Do not escalate ordinary scratch/log/cache residue or clearly reproducible lefto
 
 - Use `trash` or a recoverable cleanup mechanism when available; avoid irreversible `rm` for user data.
 - Do not delete durable or unclear files without exact approval.
-- For low-value scratch/reproducible residue, summarize counts/classes rather than asking the user to decide on each file.
+- For low-value scratch/reproducible residue, summarize counts/types rather than asking the user to decide on each file.
 - If deleting/moving is required, follow `destructive-operations.md`: exact path/scope, reason, what is not touched, and rollback/safety plan.
 
 ## Report Shape
@@ -90,7 +90,7 @@ For recurring janitor jobs:
 - auto-tidy only clearly safe `scratch`, stale `reproducible`, and expired `review-staged` residue inside approved cleanup scope;
 - do not delete, move, or route `durable`, sensitive, or `unlabeled` artifacts without exact user approval;
 - write one durable report path, overwriting or appending according to the user's workflow;
-- send the user an escalation prompt when decisions are needed, with exact paths/classes/reasons/recommended actions;
+- send the user an escalation prompt when decisions are needed, with exact paths/types/reasons/recommended actions;
 - stay silent or send only a terse summary when no escalations are needed;
 - keep Docker/image/runtime storage hygiene separate unless the workspace policy explicitly includes it.
 

@@ -11,10 +11,10 @@ tool skills
   Plain-language default for skills that teach Hermes a tool, CLI, API,
   platform, vault, account, or local workflow.
 
-soulbound skills
-  Thematic/private subtype of tool skills: local/private skills bound to
-  the user's vaults, accounts, machines, paths, and workflows. These belong
-  in the soulbound source repo and are private/local by default.
+private/local tool skills
+  Tool skills bound to a user's vaults, accounts, machines, paths, and
+  workflows. These belong in the private/local tool-skill source repo and
+  are private/local by default.
 
 Hermes proficiencies
   Public/shareable behavior or attribute skills: tidy, thorough, methodical,
@@ -26,7 +26,7 @@ runtime skills
   Avoid using this as a class name because all installed skills are runtime-loaded.
 ```
 
-Classification pitfall: do not place a Hermes proficiency in the soulbound/tool-skill source repo merely because it needs private git history. Repo/source placement should follow artifact type, not just privacy level.
+Classification pitfall: do not place a Hermes proficiency in the private/local tool-skill source repo merely because it needs private git history. Repo/source placement should follow artifact type, not just privacy level.
 
 ## Runtime Category Decision Flow
 
@@ -46,7 +46,7 @@ Agent Skill
 Tool SOP Skill
   Primary operator: Hermes using a tool/API/CLI/platform/account.
   Runtime shape: exact do/don't/verify patterns, credentials/privacy/destructive/cost guardrails, and health checks.
-  Category: put under the tool/domain category (`devops`, `productivity`, `note-taking`, `media`, `github`, etc.). If private/local-account-bound, it may also be called soulbound, but the runtime folder should still describe the tool/domain.
+  Category: put under the tool/domain category (`devops`, `productivity`, `note-taking`, `media`, `github`, etc.). If private/local-account-bound, still name the runtime folder after the tool or domain.
 
 Hermes Proficiency
   Primary operator: Hermes applying a reusable attribute or operating discipline across domains.
@@ -63,8 +63,8 @@ Review Protocol
 
 - Preserve Playbook/SOP layering: posture and routing in the skill/playbook layer; exact SOPs in focused support files; simple Tool SOPs stay compact.
 - Do not promote every Playbook, SOP, or Review Protocol into a top-level skill. Promote only when Hermes needs to invoke the behavior independently.
-- Keep privacy level separate from artifact class: private proficiencies remain proficiencies; private tool/account skills remain tool skills; public-bound copies need publishing review regardless of category.
-- If a source import exposes repeated but unclear classes, stage them in the nearest honest existing domain and leave a taxonomy note rather than creating broad final categories like `frameworks`, `misc`, or `operations` without user approval.
+- Keep privacy level separate from artifact type: private proficiencies remain proficiencies; private tool/account skills remain tool skills; public-bound copies need publishing review regardless of category.
+- If a source import exposes repeated but unclear types, stage them in the nearest honest existing domain and leave a taxonomy note rather than creating broad final categories like `frameworks`, `misc`, or `operations` without user approval.
 - For imported local/private materials, strip source-system branding from active runtime wording and describe the artifact in Hermes-native terms.
 
 ## Naming and Attribution Hygiene
