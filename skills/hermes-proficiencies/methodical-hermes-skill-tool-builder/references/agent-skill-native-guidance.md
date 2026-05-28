@@ -2,7 +2,7 @@
 
 ## Origin
 
-Created on 2026-05-27 when the owner split the old `disciplined-hermes-playbook-sop-standard` into:
+Created on 2026-05-27 when the user split the old `disciplined-hermes-playbook-sop-standard` into:
 
 - `helpful-hermes-human-playbook-sop-creator` — human-facing Playbooks/SOPs.
 - `methodical-hermes-skill-tool-builder` — agent-native skills and Tool SOPs.

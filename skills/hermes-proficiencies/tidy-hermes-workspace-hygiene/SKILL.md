@@ -1,8 +1,8 @@
 ---
 name: tidy-hermes-workspace-hygiene
-description: Use when creating, editing, moving, or deleting files. Gives Hermes the tidy proficiency for git awareness, immediate file routing, and workspace hygiene.
-version: 1.9.1
-author: Hermes Agent (adapted from OpenClaw)
+description: Use when Hermes is about to create, edit, move, delete, sync, route, publish, or leave behind durable files. Gives Hermes the tidy proficiency for git awareness, immediate file routing, and workspace hygiene so the agent does not make a mess.
+version: 1.11.1
+author: Hermes Agent
 license: MIT
 metadata:
   hermes:
@@ -14,7 +14,7 @@ metadata:
 
 ## Overview
 
-Prevent the agent from scattering files, performing destructive operations without safety nets, or violating the user's established workspace organization and git practices. This skill encodes the user's hard-won workspace discipline into Hermes-native behavior.
+Prevent the agent from scattering files, performing destructive operations without safety nets, or violating the active workspace's organization and git practices. This skill encodes Hermes-native workspace discipline: route files before writing, use git as the safety net, and avoid agent-made messes.
 
 ## Core Philosophy
 
@@ -25,18 +25,23 @@ Prevent the agent from scattering files, performing destructive operations witho
 
 ## When to Use
 
-- Any task involving write_file, patch, terminal (cp, mv, rm, mkdir), or creating new documents/scripts.
-- Tasks that cross project boundaries or involve the user's wiki, docs, citadel systems, or personal knowledge base.
-- Any operation that could be considered destructive or difficult to reverse.
-- Before starting multi-file work or when the user mentions "citadel", "wiki", "docs", or "projects".
+Use this skill whenever Hermes is about to perform a file/workspace operation, whether or not the user explicitly asked for “workspace hygiene.” The trigger is the agent action, not just the user's wording.
 
-Do not use for: Purely internal Hermes operations (e.g. writing to ~/.hermes/tmp/ for transient skill packaging).
+Load it before:
+
+- using `write_file`, `patch`, or terminal filesystem commands such as `cp`, `mv`, `rm`, `mkdir`, `rsync`, or generated-output writes;
+- creating new documents, scripts, templates, support files, exports, packages, or review artifacts;
+- editing, moving, deleting, overwriting, syncing, publishing, or leaving behind durable files;
+- touching git state, source/runtime skill trees, public/shared repos, protected wiki paths, or cross-project workspaces;
+- any operation that could create clutter, orphan files, source/runtime drift, or hard-to-reverse changes.
+
+Do not use for: read-only answering with no file/workspace side effects, or purely internal Hermes temp work under `~/.hermes/tmp/` that is guaranteed to be cleaned in the same turn.
 
 ## Runtime Contract
 
 ### Invocation Contract
 
-Hermes should load this skill before any action that can create, edit, move, delete, overwrite, route, publish, sync, or leave behind durable files. It also applies when a task touches git state, private skill source repos, installed runtime skills, public/shared repositories, protected private knowledge-base wiki paths, or workspace organization decisions.
+Hermes should load this skill before any agent action that can create, edit, move, delete, overwrite, route, publish, sync, or leave behind durable files. This is action-triggered: even if the user asks for a skill, plan, export, report, script, or cleanup without saying “file,” load this skill before Hermes writes or changes files. It also applies when a task touches git state, skill source/runtime trees, public/shared repositories, protected knowledge-base paths, or workspace organization decisions.
 
 Hermes should not load this skill for read-only answering with no file/workspace side effects, throwaway files already scoped to an approved temp directory, or pure Hermes-internal packaging under `~/.hermes/tmp/` that will be cleaned in the same turn.
 
@@ -55,7 +60,7 @@ Hermes must ask before:
 
 - deleting, moving, renaming, bulk-syncing, or recursively changing user data;
 - overwriting existing durable files when a patch would not be enough;
-- editing protected private knowledge-base wiki paths;
+- editing protected knowledge-base paths;
 - changing public/shared repos, publishing, or adding remotes;
 - reorganizing source/runtime skill directories when the destination or taxonomy is a governance decision;
 - proceeding in a non-git directory when the change is significant and no other safety net exists.
@@ -101,9 +106,8 @@ Mode: No-git safety gate
 Procedure: explain missing safety net, ask whether to proceed/init git/use another checkpoint
 Escalate: before writing durable user data
 
-Signal: ~/.hermes/skills runtime copy, private skill source repo, duplicate skill, or category placement
+Signal: installed skill tree, skill source repo, duplicate skill, source/runtime drift, or category placement
 Mode: Skill source/runtime hygiene
-Procedure: references/modes/skill-source-runtime-hygiene.md + references/skill-dev-source-layout-regressions.md when auditing regressions
 Escalate: before deleting/moving/syncing skill directories or choosing a new taxonomy bucket
 
 Signal: public/shared repo, GitHub push, packaging, or publish-clean copy
@@ -111,8 +115,8 @@ Mode: Publishing safety
 Procedure: load thorough-hermes-skill-publishing before sync/push
 Escalate: before any public write or remote change
 
-Signal: private knowledge-base wiki, private knowledge-base wiki, personal knowledge base
-Mode: Protected wiki
+Signal: protected wiki, personal knowledge base, shared docs, or other user-designated protected paths
+Mode: Protected knowledge base
 Procedure: references/modes/protected-wiki.md
 Escalate: exact path + operation + reason + rollback plan before any write
 
@@ -121,17 +125,20 @@ Mode: Destructive/bulk operation
 Procedure: references/modes/destructive-operations.md
 Escalate: always before execution unless explicitly pre-approved for exact scope
 
+Signal: temp sweep, janitor audit, orphaned files, stale review bundles, workspace/tmp residue, non-canonical outputs, nightly cleanup cron
+Mode: File janitor audit
+Procedure: references/modes/file-janitor-audit.md
+Escalate: only durable/valuable, sensitive, unlabeled, architecture-decision, or runtime-critical drift findings; scheduled runs should auto-tidy safe residue and ask the user for escalation decisions
+
 Signal: new durable artifact with no destination
 Mode: File routing
 Procedure: references/modes/normal-workspace-hygiene.md file routing rules
 Escalate: if taxonomy affects the user's operating system rather than a local implementation detail
 ```
 
-## Portability Scope
+## Portability Boundary
 
-This public version describes portable workspace-hygiene behavior. Any local rules for private notes, protected knowledge bases, personal machines, private skill-source repos, or profile-specific runtime paths should be treated as examples to parameterize, not defaults to copy blindly.
-
-Before adapting this skill, define your own protected paths, source-of-truth repos, publishing boundary, and destructive-operation approval policy.
+The default guidance in this file is portable: route before writing, check git/safety state, respect protected paths, and verify after changes. Local/private workspace policies belong in support files and must be stripped or parameterized before public export. Before publishing or sharing this skill, load `thorough-hermes-skill-publishing` and remove private paths, identities, repo names, chat IDs, internal changelogs, and machine-specific assumptions.
 
 ## Core Workflow
 
@@ -151,18 +158,19 @@ Support files are the deeper layers of this skill. Load only the selected mode p
 - `references/tidy-workspace-support-map.md` — quick map of all support files.
 - `references/modes/normal-workspace-hygiene.md` — ordinary workspace/git edits and file routing.
 - `references/modes/protected-wiki.md` — protected wiki read-only default and write approval gate.
-- `references/modes/skill-source-runtime-hygiene.md` — Hermes skill source/runtime, category, duplicate, and private repo rules.
+- `references/modes/skill-source-runtime-hygiene.md` — Hermes skill source/runtime, artifact-class category, duplicate, and private repo rules.
 - `references/modes/destructive-operations.md` — delete/overwrite/bulk operation guardrails.
+- `references/modes/file-janitor-audit.md` — temp sweep, orphan-file, stale review-bundle, and non-canonical residue classification/escalation mode.
 - `templates/workspace-verification-checklist.md` — evidence checklist for final answers.
 
 ## Required Behaviors Summary
 
 - Git is the primary safety net; check git state before significant edits.
 - Route files at creation time; no durable orphan files in cwd/temp.
-- Treat tracked skills under `~/.hermes/skills/` as the owner's canonical private runtime skill library; use git status/diff/commit there for active local skill work.
-- Use `~/.hermes/skill-dev/` only for public-bound skills, publish-clean exports, or packaging/release work; do not duplicate every private skill there.
-- Choose runtime skill categories deliberately; do not use `software-development` as a catch-all. For the owner's private runtime library, broad local Hermes behavior/proficiency skills may live under `hermes-proficiencies/` as a temporary accepted bucket, but broader category taxonomy should be refined around domains of operation during OpenClaw imports rather than vague artifact-class buckets.
-- Treat protected private knowledge-base/private knowledge-base/wiki paths as read-only unless exact write scope is approved.
+- Treat installed skills and skill source repos as high-impact workspaces: identify source of truth, inspect diffs, and avoid source/runtime drift.
+- Use public/export staging only for publish-clean copies, packages, and release work; do not duplicate every private/local skill into public-bound workspaces.
+- Choose runtime skill categories deliberately; avoid catch-all buckets unless explicitly accepted as temporary local policy.
+- Treat protected knowledge bases as read-only unless exact write scope is approved.
 - Put destructive-operation reason, exact path/scope, and safety plan in the approval request.
 - Use native Hermes tools for memory/todos/file reads/searches/patches where possible.
 
@@ -181,9 +189,9 @@ Use these cases when reviewing changes to this skill or checking whether a futur
 
 ### Should trigger — file creation/editing
 
-User asks: “Create a project plan file,” “Patch this config,” “Move these notes,” or “Clean up this repo.”
+User asks: “Create a project plan file,” “Patch this config,” “Move these notes,” or “Clean up this repo.” Hermes also triggers it internally when an apparently different task requires durable file writes, such as creating a skill support file, exporting a package, generating a report, or committing a runtime skill change.
 
-Expected behavior: load this skill, classify workspace, check git/safety state, choose final path before writing, use patch/write_file appropriately, and report touched paths + git/status evidence.
+Expected behavior: load this skill before the write/change, classify workspace, check git/safety state, choose final path before writing, use patch/write_file appropriately, and report touched paths + git/status evidence.
 
 ### Should not trigger — read-only answer
 
@@ -209,11 +217,11 @@ User asks to remove old copies, bulk sync runtime skills, or overwrite a generat
 
 Expected behavior: present exact path/scope, reason, and what will not be touched; wait for explicit approval; stop if denied; verify clean final state if approved.
 
-### Protected wiki write
+### Protected knowledge-base write
 
-Task mentions private knowledge-base wiki, private knowledge-base wiki, or personal knowledge base files.
+Task mentions protected wiki, personal knowledge base, shared docs, or other user-designated protected paths.
 
-Expected behavior: read/search/summarize only by default. Before any write, present exact paths, operation, reason the wiki must be touched, and rollback plan.
+Expected behavior: read/search/summarize only by default. Before any write, present exact paths, operation, reason the protected path must be touched, and rollback plan.
 
 ### Tool unavailable / no git repo
 
@@ -223,9 +231,9 @@ Expected behavior: say the safety check failed, avoid claiming git evidence, and
 
 ### Runtime/source skill hygiene
 
-User asks to edit an installed skill, fix source/runtime drift, or review a skill-dev folder regression.
+User asks to edit an installed skill, fix source/runtime drift, or review a skill source/export folder regression.
 
-Expected behavior: identify whether the artifact is a Hermes proficiency, soulbound/tool skill, runtime copy, or public-bound package; inspect sibling source repos for duplicates; patch the canonical private source first; sync runtime only after source is correct and overwrite scope is safe.
+Expected behavior: identify whether the artifact is an installed runtime copy, private/local source copy, or public-bound package; inspect plausible source locations for duplicates; patch the canonical private source/runtime tree according to local policy; sync/export only after source is correct and overwrite scope is safe.
 
 ### Neighboring-skill collision
 
@@ -235,17 +243,17 @@ Expected behavior: load the neighboring governing skill (`thorough-hermes-skill-
 
 ## Failure Modes
 
-- **Failure:** Agent creates files in cwd because it is convenient.
-  **Fix:** Stop, identify final path, move/recreate in the correct location, and verify no orphan remains.
+- **Failure:** Agent creates files in cwd because it is convenient or because the user did not explicitly ask for workspace hygiene.
+  **Fix:** Treat file creation/editing as the trigger. Stop, identify final path, move/recreate in the correct location, and verify no orphan remains.
 
-- **Failure:** Agent treats broad project instructions as permission to edit protected wiki files.
+- **Failure:** Agent treats broad project instructions as permission to edit protected knowledge-base files.
   **Fix:** Default to read/search/summarize; require exact path/operation/reason/rollback approval before writing.
 
-- **Failure:** Agent edits `~/.hermes/skills/` and forgets source of truth.
-  **Fix:** Reconcile runtime hotfixes back to the correct proficiencies or soulbound/tool source repo before calling the source clean.
+- **Failure:** Agent edits an installed/runtime skill and forgets source of truth.
+  **Fix:** Identify the active local source/runtime policy, inspect diffs, and reconcile the change before calling the source clean.
 
-- **Failure:** Agent uses `software-development` as a catch-all runtime category or proposes vague taxonomy buckets before the domain structure is clear.
-  **Fix:** Classify by domain of operation and artifact use-case first. Use `hermes-proficiencies/` only for broad Hermes behavior/proficiency skills as an accepted temporary bucket; keep broader OpenClaw-import taxonomy as a high-priority governance decision until enough skills/SOPs are classified.
+- **Failure:** Agent uses a catch-all runtime category or proposes vague taxonomy buckets before the domain structure is clear.
+  **Fix:** Classify by domain of operation and artifact use-case first. Keep broad taxonomy decisions explicit and reversible until enough skills/SOPs are classified.
 
 - **Failure:** Agent claims git/source/runtime validation without evidence.
   **Fix:** Report actual git root/status/equality checks or explicitly state what was not verified.
@@ -255,24 +263,11 @@ Expected behavior: load the neighboring governing skill (`thorough-hermes-skill-
 
 ## Review Cadence
 
-Review this skill monthly while the owner is actively developing Hermes operating attributes/proficiencies, then quarterly once stable. Review immediately after any workspace mess, protected-path near miss, accidental public/private source mix-up, or failed file-operation rollback.
-
-## Changelog
-
-- 1.9.1 — 2026-05-27 — Captured the owner's runtime-category correction: `software-development/` should not be a catch-all; `hermes-proficiencies/` is the accepted temporary bucket for broad Hermes proficiency skills, while the larger OpenClaw-import taxonomy should be refined around domains of operation rather than vague artifact-class buckets. Why: the owner rejected the initial broad taxonomy proposal and asked to defer final naming/category design until more skills/SOPs are imported.
-- 1.9 — 2026-05-27 — Reoriented skill source/runtime hygiene around the owner's new private runtime git repo model: tracked active/generated skills under `~/.hermes/skills/` are canonical for private local work, while `~/.hermes/skill-dev/` is reserved for public-bound/export work and hub/archive/metadata remain ignored. Why: the owner chose to make Hermes' installed skill folder the git-controlled working tree to eliminate private-source/runtime drift.
-- 1.8 — 2026-05-27 — Refactored into a stronger progressive-disclosure / gradient design: moved mode-specific detail into support files, added a support-file map and shared verification template, and slimmed `SKILL.md` into a runtime contract + mode router + core workflow. Why: the owner wanted the skill to let Hermes move faster without making workspace messes; gradient design keeps common rules always visible while deeper guardrails load only when risk/complexity requires them.
-- 1.7 — 2026-05-27 — Upgraded against `methodical-hermes-skill-tool-builder`: added explicit Runtime Contract, Expected Tools, Risk Classes, Mode Router, Local/Private Scope, Eval Cases, and related-skill routing updates. Why: adversarial review scored v1.6 at 19/26 and identified missing runtime-contract/eval/mode-router structure as the main blockers to preventing future workspace hygiene regressions while moving fast.
-- 1.6 — 2026-05-27 — Added runtime skill category-selection rule and failure mode for using `software-development` as a catch-all. Why: the owner questioned why broad Hermes proficiencies were installed under `~/.hermes/skills/software-development/`; Hermes supports category folders, but category choice must be deliberate and based on artifact type/use-case, not the folder where the work happened.
-- 1.5.1 — 2026-05-27 — Added `references/skill-dev-source-layout-regressions.md` and linked it from References. Why: the owner asked to actively capture the file-routing failure mode and learn the proper folder structure for future work; the detailed incident/audit checklist belongs in a support file while SKILL.md keeps the reusable rule.
-- 1.5 — 2026-05-27 — Added flat private-proficiencies source layout rule: root-level `<skill-name>/` directories only, no redundant `skills/` or `software-development/` wrappers in `hermes-proficiencies`. Why: the owner identified the extra wrapper folders as another skill-dev routing regression; category folders belong in runtime install paths, not the private proficiencies source repo.
-- 1.4 — 2026-05-27 — Added duplicate-source-repo placement guardrail for skill-dev hygiene and clarified runtime hotfix reconciliation must route to the correct source repo by artifact type, not always soulbound. Why: the owner corrected a regression where `tidy-hermes-workspace-hygiene` was copied into both the proficiencies repo and the soulbound/tool-skill repo; future audits should search sibling source repos and keep proficiencies out of soulbound even when both are private.
-- 1.3 — 2026-05-26 — Added playbook-grade play sequence, thresholds, failure modes, review cadence, and changelog after adversarial scoring.
-- 1.2 — 2026-05-26 — Added protected private knowledge-base wiki rule and Hermes skill source-of-truth rule.
+Review this skill monthly while workspace/proficiency behavior is actively changing, then quarterly once stable. Review immediately after any workspace mess, protected-path near miss, accidental public/private source mix-up, or failed file-operation rollback.
 
 ## Common Pitfalls to Avoid
 
-- Creating files in cwd or `~/.hermes/hermes-agent` by default.
+- Creating files in the current working directory by default.
 - Treating “I'll organize it later” as acceptable.
 - Performing significant file operations without git/status or another checkpoint.
 - Retrying or working around a denied destructive/recursive file operation.
@@ -283,12 +278,12 @@ Review this skill monthly while the owner is actively developing Hermes operatin
 
 - references/tidy-workspace-support-map.md — support-file router for progressive disclosure.
 - references/modes/normal-workspace-hygiene.md — normal workspace/git/file-routing mode.
-- references/modes/protected-wiki.md — protected wiki mode.
+- references/modes/protected-wiki.md — protected knowledge-base mode.
 - references/modes/skill-source-runtime-hygiene.md — skill source/runtime and category mode.
 - references/modes/destructive-operations.md — destructive/bulk operation mode.
+- references/modes/file-janitor-audit.md — janitor/temp-residue classification and escalation mode.
 - templates/workspace-verification-checklist.md — final verification checklist.
-- references/openclaw-workspace-organization.md — Core three-tier model and folder taxonomy.
-- references/openclaw-file-routing.md — Detailed routing SOP and naming conventions.
-- references/skill-dev-source-layout-regressions.md — Skill-dev source repo layout rules, duplicate-placement regression pattern, and audit checklist.
+- references/workspace-organization-reference.md — local/source reference for workspace taxonomy.
+- references/file-routing-reference.md — local/source reference for file-routing and naming rules.
 
-This skill should be loaded automatically for any workspace-related work.
+This skill should be loaded automatically before any agent file/workspace operation so Hermes does not make a mess.

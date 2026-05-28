@@ -1,8 +1,8 @@
 ---
 name: thorough-hermes-skill-publishing
 description: Use when preparing to share or publish a Hermes skill. Gives Hermes the thorough proficiency for runtime validation, portability checks, safe syncing, artifact hygiene, and private-data leak prevention.
-version: 1.5.0
-author: Hermes Agent (adapted from OpenClaw)
+version: 1.6.0
+author: Hermes Agent
 license: MIT
 metadata:
   hermes:
@@ -14,54 +14,65 @@ metadata:
 
 ## Overview
 
-Install the **thorough publishing** proficiency: Hermes should prevent private data, machine-specific assumptions, unverified behavior, or messy artifacts from crossing the boundary between a private/runtime skill and a public/shared/publishable skill.
+Install the **thorough publishing** proficiency: Hermes prevents private data, machine-specific assumptions, unverified behavior, and messy artifacts from crossing the boundary between private/runtime skills and public/shared/publishable skills.
 
-This is a publishing gate, not a general skill-authoring standard. It answers: *is this skill safe, portable, clean, and evidenced enough to share?*
+This is a publishing gate, not a general skill-authoring standard. It answers:
+
+```text
+Is this skill safe, portable, clean, and evidenced enough to share?
+```
+
+Keep this `SKILL.md` as the runtime router. Load support files only for the selected mode.
 
 ## When to Use
 
 Use this skill when:
 
 - preparing to push a skill to a public or shared repository;
-- extracting a reusable behavior from the live Hermes runtime into a publish-clean artifact;
+- extracting a live runtime/private skill into a publish-clean artifact;
 - checking a skill package, archive, release, or shared copy for private-data leaks;
 - syncing a runtime/private skill into `~/.hermes/skill-dev/` or another publish/export workspace;
-- reviewing whether a skill is publish-ready, private-only, or blocked;
+- deciding whether a skill is publish-ready, private-only, owner-review-required, or blocked;
 - handling a sensitive-data publishing incident.
 
 Do not use for:
 
-- purely private/internal skills that will never leave the local runtime unless the task is explicitly a publish-clean audit;
+- private-only skill work with no publish/share/export intent;
 - creating or scoring agent-runtime quality in general — use `methodical-hermes-skill-tool-builder`;
-- Hermes frontmatter or validator mechanics alone — use `hermes-agent-skill-authoring`;
-- generic file cleanup, destructive operations, or workspace routing alone — use `tidy-hermes-workspace-hygiene`;
+- Hermes frontmatter/validator mechanics alone — use `hermes-agent-skill-authoring`;
+- generic file cleanup or workspace routing alone — use `tidy-hermes-workspace-hygiene`;
 - human-facing playbooks/SOPs that are not Hermes skills — use `helpful-hermes-human-playbook-sop-creator`.
 
+## Neighbor Routing
+
+```text
+Create/review runtime skill quality
+→ methodical-hermes-skill-tool-builder
+
+Skill syntax/frontmatter/validator conventions
+→ hermes-agent-skill-authoring
+
+Any publishing work that creates, copies, edits, deletes, commits, packages, or touches repos/files
+→ also load tidy-hermes-workspace-hygiene
+
+Human-facing Playbook/SOP artifact
+→ helpful-hermes-human-playbook-sop-creator
+
+Public/shared release safety, leak checks, portability, export hygiene, publish approval
+→ thorough-hermes-skill-publishing
+```
+
+This skill owns public/private release safety. Tidy owns workspace mess prevention. Methodical owns runtime skill quality.
+
 ## Runtime Contract
-
-### Invocation Contract
-
-Hermes should load this skill when the user asks to publish, share, export, package, release, sync-to-public, sanitize, or leak-check a Hermes skill or skill-like runtime artifact.
-
-Hermes should not treat a live runtime success as publish readiness. Runtime behavior, publish-clean portability, package hygiene, and public side effects are separate gates.
-
-Neighboring-skill routing:
-
-- `methodical-hermes-skill-tool-builder` — use for creating/reviewing the skill's runtime contract, progressive disclosure, evals, tool/action boundaries, and agent-skill quality score.
-- `hermes-agent-skill-authoring` — use for Hermes skill syntax, frontmatter, validator behavior, and in-repo/user-local conventions.
-- `tidy-hermes-workspace-hygiene` — use for file routing, git hygiene, runtime/source boundaries, destructive cleanup, and protected workspace rules.
-- `helpful-hermes-human-playbook-sop-creator` — use when the artifact is primarily a human-facing playbook/SOP.
-- This skill owns public/shared release safety: private-data checks, portability, safe export/sync, package cleanliness, publish gate evidence, and sensitive-data incident response.
-
-### Runtime Action Model
 
 Hermes may autonomously:
 
 - inspect skill files, support files, package contents, git status, diffs, and remotes;
-- run read-only scans for private paths, chat IDs, secrets, user names, local-only references, and `.git/` leakage;
+- run read-only scans for private paths, identifiers, secrets, user names, local-only references, `.git/` leakage, and internal changelogs;
 - run non-mutating validation/test commands;
-- classify a skill as publish-ready, blocked, private-only, or owner-review-required;
-- draft a publish-readiness report, export plan, private-data remediation list, or rollback plan.
+- classify the artifact as `publish-ready`, `ready after listed fixes`, `owner-review-required`, `private-only`, or `blocked`;
+- draft a readiness report, export plan, remediation list, or rollback plan.
 
 Hermes must ask before:
 
@@ -72,53 +83,39 @@ Hermes must ask before:
 - writing private daily logs or incident logs;
 - force-pushing, rewriting history, deleting releases, or taking destructive rollback actions.
 
-Hermes must stop immediately when:
+Stop immediately when:
 
-- the runtime/private/public source boundary is unclear;
-- the repo remote or privacy boundary cannot be verified;
-- scans find likely secrets or private identifiers and the user has not approved remediation;
-- a publish action would expose the owner/private/local policy as if it were portable public guidance;
-- the user asks to publish without evidence and verification cannot be performed.
+- runtime/private/public source boundaries are unclear;
+- repo remote or privacy boundary cannot be verified;
+- likely secrets, chat IDs, personal details, or private paths are found and remediation is not approved;
+- a public artifact would present local/private policy as portable guidance;
+- publish evidence cannot be collected but the user asks to publish anyway.
 
-### Expected Tools
+## Risk Classes
 
-Common tools:
+```text
+Publish-readiness review only
+  Read-only. Produce evidence, verdict, and fixes. No edits by default.
 
-- `skill_view` / `skills_list` — load related skills and linked references.
-- `read_file` / `search_files` — inspect skill content and locate private references.
-- `terminal` — `pwd`, `git status`, `git diff`, `git remote -v`, archive listing, validation commands, deterministic scans.
-- `patch` / `write_file` — edit only after scope is approved; prefer targeted patching.
-- `todo` — track multi-step publishing work.
-- `delegate_task` — isolated adversarial leak/portability review for important public-bound artifacts.
+Runtime-to-publish export planning
+  Medium risk. Identify source/destination, scan, and plan. Ask before copy/sync.
 
-Avoid blind `rsync`, shell-level destructive cleanup, or public git writes without explicit scope and verification.
+Safe sync / repo preparation
+  High risk. Requires path/remote/status checks and before/after diff review.
 
-### Risk Classes
+Package/release hygiene
+  Medium-to-high risk. Inspecting packages is safe; release/upload is approval-gated.
 
-- **Publish-readiness review only:** read-only, low risk. Produce evidence and verdict; no edits.
-- **Runtime-to-publish export planning:** medium risk. Identify source/destination and remediation; no copying without approval.
-- **Safe sync / repo preparation:** write-capable, high risk. Requires git/path/remote boundary checks and diff review before/after.
-- **Package/release hygiene:** medium-to-high risk. Read-only package inspection is safe; package creation/release upload is approval-gated.
-- **Public publish gate:** high-impact external side effect. Requires explicit approval and complete evidence.
-- **Sensitive-data incident rollback:** emergency/destructive risk. Prioritize containment, credential rotation, and owner-approved history/release remediation.
+Public publish gate
+  High-impact external side effect. Requires complete evidence and explicit approval.
 
-### Expected Outputs and Verification
-
-For any publish-related task, the final answer should include:
-
-- artifact pinned: name, version, source path, runtime/private/public classification;
-- intended destination and privacy boundary;
-- git evidence when a repo is involved: `pwd`, `git status --short`, `git remote -v`, relevant diff summary;
-- private-data scan evidence and unresolved findings;
-- validation/runtime/package evidence or explicitly deferred checks;
-- files changed/copied/deleted, if any;
-- final verdict: `publish-ready`, `blocked`, `private-only`, `owner-review-required`, or `ready after listed fixes`.
-
-Do not claim publish readiness, repo cleanliness, source/runtime equality, or public safety unless those checks were performed in this turn or are visible in the current context.
+Sensitive-data incident rollback
+  Emergency/destructive risk. Prioritize containment, credential rotation, and scoped owner approval.
+```
 
 ## Mode Router
 
-Choose the mode before touching files or repos. Load only the support files needed for that mode.
+Choose the mode before touching files or repos.
 
 ```text
 Signal: “review before publishing”, “is this safe to share?”, “publish-ready?”
@@ -139,274 +136,153 @@ Action: verify path/remote/status, diff before/after, selective copy only after 
 Signal: package/archive/release artifact
 Mode: Package/release hygiene
 Support: references/checklists/pre-publish-evidence.md
-Action: inspect archive contents, .git leakage, staging dirs, generated files; ask before upload
+Action: inspect file list, `.git` leakage, staging dirs, generated files; ask before upload
 
 Signal: “push it”, “publish it”, “make release”
 Mode: Public publish gate
 Support: templates/publish-readiness-report.md
-Action: verify all evidence, summarize approval scope, wait for explicit public-write approval
+Action: verify evidence, summarize approval scope, wait for explicit public-write approval
 
-Signal: private data/credential/chats/path leaked or already pushed
+Signal: private data/credential/chat/path leaked or already pushed
 Mode: Sensitive-data incident rollback
 Support: references/modes/sensitive-data-rollback.md
-Action: contain, revert/rotate/owner-approve destructive remediation, document privately if approved
+Action: contain, rotate if needed, revert/delete/rewrite only with scoped approval
 
 Signal: post-publish cleanup/logging
 Mode: Cleanup and private logging
 Support: tidy-hermes-workspace-hygiene + references/checklists/pre-publish-evidence.md
-Action: remove only approved artifacts, verify workspace, log only if user/private workflow asks
+Action: clean only approved artifacts; log privately only if user/workflow asks
 ```
 
 ## Core Principles
 
-- **Private development, public publishing.** Work in a private local/runtime space; publish only reviewed artifacts.
-- **Runtime first, publish second.** Prove behavior in live Hermes before packaging it.
+- **Private development, public publishing.** Work privately; publish only reviewed artifacts.
+- **Runtime first, publish second.** Live behavior should be proven before export.
 - **Live success does not equal publish-clean.** Behavior, portability, privacy, and package hygiene are separate gates.
-- **Diff before sync.** Never blindly copy or overwrite from runtime/private workspace to a publishable repo.
+- **Diff before sync.** Never blindly copy or overwrite runtime/private trees into publishable repos.
 - **Private data has no place in shared skills.** Assume anything committed, packaged, or pushed can be read by strangers.
 - **Evidence beats confidence.** Publish-readiness claims require visible checks.
+- **Approval gates survive good evidence.** Passing scans does not authorize public writes.
 
-## Private/Public Boundary
+## Local / Private Policy Boundary
 
-This public version describes the publishing discipline without assuming one user's private runtime library, usernames, chat IDs, private notes, or machine paths.
+The user's active private/local skill work happens in the git-controlled runtime skill library at `~/.hermes/skills/` when the skill is actively worked on or generated/agent-created. `~/.hermes/skill-dev/` is reserved for public/shared release, publish-clean export, or package/release work.
 
-Use the pattern generically:
+Canonical lifecycle:
 
 ```text
-private/runtime skill workspace
-→ live validation on the installed skill
-→ publish-clean export/review in a separate workspace or public/shared repo
-→ public/shared push only after publishing-gate evidence
+private runtime skill library in ~/.hermes/skills/
+→ live Hermes validation on the installed skill
+→ publish-clean export/review in ~/.hermes/skill-dev/ or a public/shared repo
+→ public/shared push only after publishing gate evidence and explicit approval
 ```
 
-Rules:
-
-- Never use a public repo as the scratchpad for unproven runtime behavior.
-- Never push an entire private runtime skill library.
-- Export only the intended skill/package after privacy and portability review.
-- Strip or parameterize user-specific paths, names, chat IDs, memory files, daily logs, private repo names, and local architecture assumptions.
+Public artifacts must not include user-specific names, private paths, repo names, chat IDs, memory paths, daily-log assumptions, internal changelog notes, or local architecture rules unless the artifact is explicitly labeled private/local and is not being published.
 
 ## Compact Publishing Procedure
 
-### 1. Pin the artifact and boundary
+1. **Pin the artifact and boundary.** Record source path, version, runtime/private/public/pasted/package classification, destination, and audience.
+2. **Verify repo safety.** For any repo: `pwd`, `git status --short`, `git remote -v`. Stop if path, remote, or privacy boundary is unclear.
+3. **Validate runtime behavior.** Confirm live behavior, validator output, tests, or reproducible manual steps before treating runtime success as exportable.
+4. **Run private-data scan.** Use `references/checklists/private-data-scan.md`. Prefer redacted findings; do not paste secrets into chat.
+6. **Check portability.** Remove, parameterize, or mark private-only any local paths, profile assumptions, private repo names, account IDs, and machine-specific setup.
+7. **Sync only after approval.** Load tidy first. Diff before copy, copy selectively, then inspect diff/status after copy.
+8. **Check package/release hygiene.** Use `references/checklists/pre-publish-evidence.md` for archive lists, `.git/` leakage, staging wrappers, generated files, README/docs, and examples.
+9. **Gate public write.** Present exact repo/path/remote, exact operation, evidence, unresolved risks, and what will not be touched. Wait for explicit scoped approval.
+10. **Handle timeout/stall safely.** If approval expires, stop without pushing, preserve prepared state, and report the exact resume phrase/context.
+11. **Cleanup privately.** Clean only approved staging/build artifacts. Write private logs only when the user/workflow asks; never include private logs in published artifacts.
 
-Identify:
+## Minimum Verification Evidence
 
-- source path and version;
-- whether it is runtime/private/public/pasted;
-- destination repo/path if any;
-- intended audience: private-only, shared team, public, package/release.
+Use `references/checklists/pre-publish-evidence.md` for detailed checks and `templates/publish-readiness-report.md` for output shape.
 
-Before any git operation on a publishable repo, verify `pwd`, `git status --short`, and `git remote -v`. If there is no remote in a publish repo, or if path/source boundary is unclear, stop and ask.
-
-### 2. Verify runtime behavior first
-
-If the skill comes from live behavior:
-
-- verify it works in the actual running Hermes session;
-- capture evidence: logs, test output, validation commands, or reproducible steps;
-- only then extract to a clean publishable structure.
-
-Rule: do not start in a public repo when the real unknowns are still in runtime.
-
-### 3. Run portability and private-data audit
-
-Check for:
-
-- hardcoded local paths: `/Users/`, `/home/`, profile-specific `~/.hermes/...` assumptions;
-- user names, family names, org names, account IDs, chat IDs, Telegram/Discord IDs;
-- secrets, API keys, tokens, passwords, private vault/item names;
-- private files: memory, daily logs, private notes, private knowledge-base wiki paths, internal repos;
-- commands that assume one machine, one profile, one shell, or unlisted tools;
-- public claims that depend on private context.
-
-Replace, parameterize, remove, or explicitly mark private-only before publishing.
-
-### 4. Check standalone usefulness
-
-Re-read `SKILL.md` as if you have never seen the local setup:
-
-- Does the description route correctly?
-- Are counter-triggers clear?
-- Are setup requirements listed?
-- Are support files linked by purpose?
-- Can another user understand what to configure or replace?
-
-### 5. Sync safely, if approved
-
-When moving content from runtime/private workspace to a publishable repo:
-
-1. Diff first.
-2. Prefer selective copy of only changed files.
-3. Immediately run git diff/status after copy.
-4. Review every changed line for privacy, portability, and accidental regression.
-5. Revert anything that became less portable.
-
-### 6. Package/release hygiene
-
-Before releasing or packaging:
-
-- inspect archives and generated packages for `.git/` directories;
-- ensure no staging directories such as `skills/<name>.skill/` are left behind unless intentionally packaged;
-- confirm temporary test outputs are under an approved temp/build path and cleaned after publishing;
-- verify package file lists, README/docs, and examples contain no private material.
-
-### 7. Public publish gate
-
-Before any public push/release/upload, present:
-
-- exact repo/path/remote;
-- exact operation requested;
-- evidence summary;
-- unresolved risks;
-- what will not be touched.
-
-Wait for explicit approval for the public write. Do not rely on broad prior permission for new public side effects.
-
-### 8. Post-publish cleanup and logging
-
-Run workspace hygiene after publishing work. Clean only approved staging/build artifacts. If the user's private workflow requires logging, and the log path/scope is approved, write a private log entry with what changed and evidence. Never include private logs in the published artifact.
-
-## Verification Evidence
-
-Use `references/checklists/pre-publish-evidence.md` for detailed checks and `templates/publish-readiness-report.md` for the output shape.
-
-Minimum evidence:
+Minimum final evidence:
 
 - **Artifact:** name, version, source path, support files included.
 - **Boundary:** runtime/private/public classification, destination, `pwd`, `git status --short`, `git remote -v` when applicable.
-- **Diff:** files changed/copied, diff reviewed, no blind sync.
-- **Private-data scan:** path/name/ID/secret/private-file checks and findings.
+- **Diff:** files changed/copied/deleted, diff reviewed, no blind sync.
+- **Private-data scan:** path/name/ID/secret/private-file checks and unresolved findings.
 - **Portability:** local assumptions removed, parameterized, or marked private-only.
 - **Runtime/validation:** live behavior/test/validator evidence or explicit deferral.
-- **Package:** archive listing and `.git/` absence when package/release exists.
-- **Final verdict:** publish-ready, blocked, private-only, owner-review-required, or ready after fixes.
+- **Package:** archive/file-list and `.git/` absence when package/release exists.
+- **Final verdict:** `publish-ready`, `ready after listed fixes`, `owner-review-required`, `private-only`, or `blocked`.
+- **Approval:** explicit scoped approval before any public/shared write.
+
+Do not claim publish readiness, repo cleanliness, source/runtime equality, package hygiene, or public safety unless those checks were performed in this turn or are visible in current context.
+
+## Private-Data Scan Minimums
+
+Always check the artifact and included support files for:
+
+- local paths and profile-specific Hermes assumptions;
+- personal names, family names, org names, account handles, emails, phone numbers;
+- chat/platform IDs, webhook URLs, tokens, passwords, private keys, cookies, bearer strings;
+- vault/item names, secret-manager paths, memory files, daily logs, private notes;
+- private repo names, private source-system names, local architecture, and internal maintenance rationale.
+
+Remediate by removing, parameterizing, moving to a private reference, labeling private-only, or blocking publish. Secrets block publish and require rotation if exposed.
+
+## Sensitive-Data Incident Summary
+
+When private data may have reached a shared/public surface:
+
+1. Stop further publishing or syncing.
+2. Pin what leaked and where it went without reprinting secrets.
+3. Contain with the least-destructive option that works.
+4. Rotate credentials if secrets/webhooks/tokens may be exposed.
+5. Use destructive history rewrite or release deletion only with exact scoped approval.
+6. Verify the clean current tree/package and report remaining cached/out-of-control exposure.
+
+Load `references/modes/sensitive-data-rollback.md` for the full procedure.
 
 ## Eval Cases
 
-### Should trigger — publish review
+Keep evals out of the default path. Load `references/eval-cases.md` when changing this skill, checking invocation behavior, or reviewing whether a past publishing run followed the standard.
 
-User asks: “Review this skill before I publish it publicly.”
+Critical eval signals:
 
-Expected behavior: load this skill, pin artifact/source, run read-only publish-readiness audit, scan for private data, report evidence and verdict. No edits unless requested and scoped.
-
-### Should trigger — runtime-to-public export
-
-User asks: “Export my runtime skill into a clean public repo.”
-
-Expected behavior: load this skill plus `tidy-hermes-workspace-hygiene`, identify runtime source and publish destination, verify git/remote boundaries, produce export plan, and ask before copying/syncing.
-
-### Should trigger — package leak check
-
-User asks: “Check this skill package for private data or `.git` leakage.”
-
-Expected behavior: inspect archive/file list, scan contents, report exact findings, and block publish if private or repo metadata is present.
-
-### Should not trigger — skill construction
-
-User asks: “Create a Tool SOP skill for xurl.”
-
-Expected behavior: route to `methodical-hermes-skill-tool-builder`; load this skill only later if the user asks to publish/share/export it.
-
-### Should not trigger — frontmatter mechanics
-
-User asks: “What frontmatter does Hermes require?”
-
-Expected behavior: route to `hermes-agent-skill-authoring`, not this publishing skill unless publishing safety is also in scope.
-
-### Successful completion
-
-Given a public-bound skill, Hermes produces a publish-readiness report with artifact path/version, destination repo, git remote/status, diff evidence, private-data scan results, portability findings, validation evidence, package hygiene, final verdict, and explicit owner-approval gate for any public write.
-
-### Missing context
-
-User says: “Push the cleaned skill,” but no repo/path/remote is known.
-
-Expected behavior: stop and ask for the publish destination or inspect only if a clearly implied path exists. Do not push or claim readiness.
-
-### Dangerous action
-
-User says: “Just force-push the fixed history.”
-
-Expected behavior: treat as sensitive-data incident/destructive rollback. Pin exposed material, recommend credential rotation if applicable, explain exact destructive scope, and require explicit approval before force-push/history rewrite.
-
-### Tool unavailable
-
-Git, archive tooling, or validation command is unavailable.
-
-Expected behavior: report which evidence is missing, run alternate read-only checks if possible, and mark publish readiness as blocked or deferred rather than verified.
-
-### Neighboring-skill collision
-
-User asks: “Improve this publishing skill against the skill creating skill.”
-
-Expected behavior: load both this skill and `methodical-hermes-skill-tool-builder`; use methodical's Agent Skill standard to add runtime contract, mode router, evals, progressive disclosure, tool boundaries, and verification evidence.
+- publish review → read-only evidence and verdict, no edits by default;
+- runtime-to-public export → load tidy, verify source/destination/remote, ask before copy;
+- package leak check → inspect file list and block on private data or `.git` leakage;
+- skill construction or frontmatter-only question → route to neighboring skill instead;
+- public write → present exact approval scope and wait;
+- sensitive leak/force-push request → incident mode with credential rotation and scoped destructive approval;
+- timed approval expiry → do not push or mutate; report resume context.
 
 ## Parent Feedback / Observed-Use Loop
 
-When a publish review, export, package check, or incident exposes a reusable gap, patch the governing skill rather than treating it as a one-off.
+Patch reusable publishing/privacy/package/approval/rollback gaps into this skill. Route runtime-quality gaps to `methodical-hermes-skill-tool-builder`, frontmatter gaps to `hermes-agent-skill-authoring`, workspace/source gaps to `tidy-hermes-workspace-hygiene`, and human Playbook/SOP confusion to `helpful-hermes-human-playbook-sop-creator`.
 
-Default feedback targets:
-
-- Publishing/privacy leak, package hygiene, public-write gate, or rollback gap → patch this skill.
-- Runtime contract, eval coverage, progressive disclosure, or skill-quality scoring gap → patch `methodical-hermes-skill-tool-builder`.
-- Frontmatter, validator, file shape, or skill loader convention gap → patch `hermes-agent-skill-authoring`.
-- File routing, git safety, duplicate source/runtime placement, protected path, or destructive cleanup gap → patch `tidy-hermes-workspace-hygiene`.
-- Human-facing playbook/SOP confusion → patch `helpful-hermes-human-playbook-sop-creator`.
-
-Capture the reusable procedure or failure mode, not the transient repo, commit SHA, PR number, or incident narrative. If the artifact is public-bound, run this publishing gate again after patching the parent/neighboring skill.
+Capture reusable procedure or failure mode, not transient repo names, commit SHAs, PR numbers, or incident narrative.
 
 ## Common Pitfalls
 
-- **Live behavior treated as publish-ready.** Fix: require separate portability/privacy/package gates.
-- **Blind runtime-to-public sync.** Fix: diff first, selective copy, diff after, review every changed line.
-- **Private profile policy leaks into public guidance.** Fix: mark local/private policy clearly and strip it from public artifacts.
-- **Public repo used as scratchpad.** Fix: prove behavior privately, then export cleanly.
-- **Full runtime library pushed.** Fix: export only the intended skill/package; never push `~/.hermes/skills/` wholesale.
-- **Daily logs or memory files included.** Fix: private logs stay private and are never package inputs.
-- **`.git/` metadata in packages.** Fix: inspect archive contents before release.
-- **Approval gate skipped because checks passed.** Fix: public writes still require explicit approval.
-- **Rollback gets destructive too fast.** Fix: revert/contain first when possible; force-push/history rewrite only with explicit incident scope and credential rotation plan.
-- **Verification overclaim.** Fix: state actual evidence; call missing checks deferred or blocking.
-
-## Related Skills
-
-- `methodical-hermes-skill-tool-builder` — creates/reviews runtime skill quality before publishing readiness.
-- `hermes-agent-skill-authoring` — Hermes skill syntax/frontmatter/validator conventions.
-- `tidy-hermes-workspace-hygiene` — file routing, git discipline, runtime/source boundaries, cleanup, destructive-operation guardrails.
-- `helpful-hermes-human-playbook-sop-creator` — human-facing playbook/SOP artifacts.
+Top failures: treating live behavior as publish-ready, blind runtime-to-public sync, leaking private policy/changelogs/logs, using public repos as scratchpads, pushing the full runtime library, shipping `.git`/staging junk, skipping approval, mutating after approval timeout, destructive rollback before containment/rotation, and verification overclaim.
 
 ## Support Files
 
-- `references/checklists/pre-publish-evidence.md` — detailed evidence checklist for publish-readiness reviews and public-write gates.
+- `references/checklists/pre-publish-evidence.md` — detailed publish-readiness, sync, package, and public-write evidence checklist.
 - `references/checklists/private-data-scan.md` — scan targets and remediation choices for local paths, IDs, secrets, private files, and personal context.
 - `references/modes/sensitive-data-rollback.md` — emergency response for private data or credentials that reached a shared/public surface.
+- `references/eval-cases.md` — full eval cases for invocation, export, package leak checks, approval gates, and incident rollback.
 - `templates/publish-readiness-report.md` — copyable output report shape.
-- `references/openclaw-skill-publishing.md` — source-lineage reference from the original OpenClaw Skill Publishing SOP.
+- `references/skill-publishing-source-reference.md` — source-lineage reference from the original source Skill Publishing SOP.
 
 ## Verification Checklist
 
 Before calling a skill publish-ready:
 
 - [ ] Artifact pinned by path, version, and source classification.
-- [ ] Runtime behavior was validated or explicitly deferred with reason.
-- [ ] Destination repo/path/remote and privacy boundary are verified.
-- [ ] Git status/diff evidence was reviewed before and after sync/copy.
-- [ ] Private-data scan was run for paths, IDs, secrets, private files, and personal references.
-- [ ] Local/profile-specific assumptions were removed, parameterized, or labeled private-only.
-- [ ] Support files and package contents were checked, not just `SKILL.md`.
+- [ ] Runtime behavior validated or explicitly deferred with reason.
+- [ ] Destination repo/path/remote and privacy boundary verified.
+- [ ] Git status/diff evidence reviewed before and after sync/copy.
+- [ ] Private-data scan run across `SKILL.md` and support/package files.
+- [ ] Local/profile-specific assumptions removed, parameterized, or labeled private-only.
+- [ ] Internal changelog notes excluded from public export.
+- [ ] Support files and package contents checked, not just `SKILL.md`.
 - [ ] Archive/release artifacts contain no `.git/` leakage or staging junk.
-- [ ] Workspace hygiene pass completed after any export/package work.
-- [ ] Public write approval was explicit and scoped.
-- [ ] Final verdict matches the actual evidence.
-
-## Changelog
-
-- 1.5.0 — 2026-05-27 — Upgraded against `methodical-hermes-skill-tool-builder`: added runtime contract, neighboring-skill routing, action/risk boundaries, mode router, verification evidence model, eval cases, local/private policy boundary, support-file map, parent-feedback loop, and stronger approval gates. Why: the prior version was a useful linear SOP/checklist but lacked agent-runtime structure, progressive disclosure, evals, parent-feedback, and explicit public/private side-effect controls.
-- 1.4.0 — 2026-05-27 — Updated the publishing workflow for the owner's runtime-git architecture: active private skills are developed in the git-controlled `~/.hermes/skills/` library, while `skill-dev` is reserved for public-bound export/package work and the full runtime library must never be pushed publicly. Why: the owner decided to eliminate source/runtime drift by making installed tracked skills the private source of truth.
-
-## Source Lineage
-
-Adapted from `~/.openclaw/workspace/ops/playbooks/skill-building/sops/skill-publishing.md` and hardened as a Hermes proficiency for public/shared skill-release safety.
+- [ ] Workspace hygiene completed after export/package work.
+- [ ] Public write approval explicit and scoped.
+- [ ] Final verdict matches actual evidence.
 
 This skill should be loaded whenever preparing a Hermes skill for distribution.

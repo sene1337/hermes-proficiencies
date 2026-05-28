@@ -17,7 +17,7 @@ Enforces operational discipline when turning working local behavior into clean, 
 Copy the entire `thorough-hermes-skill-publishing` folder into your Hermes skills directory:
 
 ```bash
-~/.hermes/skills/hermes-proficiencies/thorough-hermes-skill-publishing/
+~/.hermes/skills/software-development/thorough-hermes-skill-publishing/
 ```
 
 Then restart Hermes so the skill is picked up.
@@ -33,4 +33,4 @@ Automatically loads when you are preparing a skill for distribution or public sh
 
 ## Origin
 
-Adapted from the OpenClaw Skill Publishing SOP with adjustments for Hermes' architecture and tooling.
+Adapted from the source Skill Publishing SOP with adjustments for Hermes' architecture and tooling.

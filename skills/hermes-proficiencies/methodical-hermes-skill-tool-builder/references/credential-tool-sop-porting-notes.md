@@ -18,7 +18,7 @@ Required conversion steps:
 
 3. Preserve service/gateway startup lessons as warnings, not blindly copied platform rules.
    - Example durable rule: do not wire secret fetches into long-running service startup unless that service environment is proven to carry required auth env vars and failure mode is safe.
-   - Avoid copying OpenClaw-specific rules like `openclaw.json` or SecretRefs directly into Hermes unless explicitly adapting them.
+   - Avoid copying source-specific rules like `source config pattern` or SecretRefs directly into Hermes unless explicitly adapting them.
 
 4. Add Hermes runtime boundaries.
    - What Hermes may do autonomously: check CLI version, check token presence without printing it, verify vault access by exit code/count.

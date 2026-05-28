@@ -1,6 +1,6 @@
-# OpenClaw Skill Publishing SOP (Reference)
+# source Skill Publishing SOP (Reference)
 
-**Source:** ~/.openclaw/workspace/ops/playbooks/skill-building/sops/skill-publishing.md
+**Source:** <private source path>/skill-building/sops/skill-publishing.md
 
 Key principles extracted for Hermes:
 

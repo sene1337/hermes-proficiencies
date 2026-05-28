@@ -1,6 +1,6 @@
-# Workspace Organization (OpenClaw Reference)
+# Workspace Organization (Source Reference)
 
-> **Source:** ~/.openclaw/workspace/ops/playbooks/workspace/workspace-organization.md  
+> **Source:** <private source path>/workspace/workspace-organization.md  
 > **Status:** Reference copy for Hermes workspace-hygiene skill
 
 ## Objective

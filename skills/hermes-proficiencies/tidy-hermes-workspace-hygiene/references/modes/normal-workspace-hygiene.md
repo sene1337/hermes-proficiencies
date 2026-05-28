@@ -6,7 +6,7 @@ Use when the task creates, edits, moves, routes, or verifies files inside an ord
 
 Use this operating sequence for any file-affecting task:
 
-1. **Classify the workspace.** Identify the target path and whether it is a normal workspace, installed Hermes runtime state, private skill source repo, public publish repo, or protected private knowledge-base wiki.
+1. **Classify the workspace.** Identify the target path and whether it is a normal workspace, installed Hermes runtime state, private skill source repo, public publish repo, or protected iCloud wiki.
 2. **Check safety state.** For normal workspaces and repos, check git root/status before edits. For protected paths, stop unless exact write scope was explicitly approved.
 3. **Route before creating.** Decide the final path before writing. Do not create temporary-orphan files in the current working directory.
 4. **Choose the least risky edit mode.** Prefer `patch` for existing files, `write_file` for new files or intentional complete rewrites, and terminal file operations only when they are the right tool.
@@ -26,7 +26,7 @@ Use these defaults when the user has not provided stronger instructions:
 Default actions:
 
 ```text
-If path is protected private knowledge-base wiki:
+If path is protected iCloud wiki:
   read/search/summarize only unless exact write scope is approved.
 
 If path is ~/.hermes/skills and skill is shareable/important:
@@ -107,8 +107,8 @@ Daily logs and temporary files are exempt from this requirement.
 ### 11. Reference Existing Work
 
 The following documents are considered authoritative until superseded:
-- references/openclaw-workspace-organization.md
-- references/openclaw-file-routing.md
+- references/workspace-organization-reference.md
+- references/file-routing-reference.md
 
 When in doubt, follow the spirit of those documents.
 

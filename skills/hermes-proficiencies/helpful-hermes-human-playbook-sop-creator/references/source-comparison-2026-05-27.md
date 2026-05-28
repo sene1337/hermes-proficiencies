@@ -1,21 +1,21 @@
-# OpenClaw Source Comparison — 2026-05-27
+# Source Comparison — 2026-05-27
 
 ## Context
 
-the owner asked whether Grok stripped too much from the original OpenClaw Playbook Creation / SOP Creation / Review Protocol materials when converting them into `helpful-hermes-human-playbook-sop-creator`.
+the user asked whether Grok stripped too much from the original source Playbook Creation / SOP Creation / Review Protocol materials when converting them into `helpful-hermes-human-playbook-sop-creator`.
 
 Original source documents reviewed:
 
-- `~/.openclaw/workspace/ops/playbooks/playbook-creation/playbook-creation.md`
-- `~/.openclaw/workspace/ops/playbooks/playbook-creation/sops/sop-creation.md`
-- `~/.openclaw/workspace/ops/playbooks/playbook-creation/sops/sop-templates.md`
-- `~/.openclaw/workspace/ops/playbooks/playbook-creation/sops/review-protocol.md`
+- `<private source path>/playbook-creation/playbook-creation.md`
+- `<private source path>/playbook-creation/sops/sop-creation.md`
+- `<private source path>/playbook-creation/sops/sop-templates.md`
+- `<private source path>/playbook-creation/sops/review-protocol.md`
 
 ## Finding
 
-The Hermes skill preserved the broad structure, but the first conversion softened several operationally important rules. The skill should remain Hermes-native and human-facing, but regain OpenClaw's sharper accountability and execution discipline.
+The Hermes skill preserved the broad structure, but the first conversion softened several operationally important rules. The skill should remain Hermes-native and human-facing, but regain the source system sharper accountability and execution discipline.
 
-## High-value OpenClaw details to preserve
+## High-value source details to preserve
 
 - Owner / Reviewer / Review Cadence should be first-class fields, not buried in prose.
 - Playbooks should be copy-paste executable: if the operator cannot directly follow a checklist, template, script, framework, or artifact, the playbook is too theoretical.
@@ -35,7 +35,7 @@ The Hermes skill preserved the broad structure, but the first conversion softene
 
 ## Design decision
 
-Do not revert to raw OpenClaw docs. Keep the Hermes skill improvements:
+Do not revert to raw user-built source docs. Keep the Hermes skill improvements:
 
 - human-facing scope;
 - separation from agent/tool runtime standards;
@@ -44,4 +44,4 @@ Do not revert to raw OpenClaw docs. Keep the Hermes skill improvements:
 - audience/operator clarity;
 - stronger scoring rubric.
 
-Patch the skill by adding OpenClaw's operational teeth back into the Hermes-native structure.
+Patch the skill by adding the source system operational teeth back into the Hermes-native structure.

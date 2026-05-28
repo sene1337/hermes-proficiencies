@@ -11,7 +11,7 @@ Use when a task might delete, move, rename, overwrite, bulk-sync, recursively mo
 - For mid-work delete/destructive approval prompts, include the reason directly in the approval ask box: why the deletion is needed, the exact path/scope, and what is explicitly not being touched. The reason must explain the operational/user benefit (for example, "remove stale runtime leftovers so the installed skill matches the source of truth"), not merely restate the shell operation (bad: "recursive delete"). Keep it short and decision-light.
 - Balance both user concerns: avoid reckless destructive changes **and** avoid leaving stale copies, orphan files, or cleanup debt on disk for the user to review later. Recommend the clean final-state path yourself; do not make the user choose among abstract cleanup strategies unless there is a real strategic tradeoff.
 - When using terminal for file operations, show the command first when it is destructive.
-- For protected private knowledge-base wiki paths, treat **any write operation** as high-risk, even if the change is small.
+- For protected iCloud wiki paths, treat **any write operation** as high-risk, even if the change is small.
 
 ## Approval Format
 

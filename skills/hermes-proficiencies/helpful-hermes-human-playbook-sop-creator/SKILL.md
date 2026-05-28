@@ -1,8 +1,8 @@
 ---
 name: helpful-hermes-human-playbook-sop-creator
 description: Use when creating, converting, or reviewing human-facing playbooks, SOPs, operating standards, or review protocols. Teaches Hermes to turn messy context into clear, repeatable artifacts a human can follow.
-version: 1.1.1
-author: Hermes Agent (adapted from OpenClaw)
+version: 1.1.3
+author: Hermes Agent
 license: MIT
 metadata:
   hermes:
@@ -20,9 +20,9 @@ Teach Hermes how to create, convert, and score **human-facing** operational arti
 - **Standard SOPs** — exact, repeatable procedures a human can follow to complete a known task.
 - **Review protocols** — strict scoring loops that make playbooks and SOPs clearer, safer, and more maintainable before humans rely on them.
 
-This skill is deliberately optimized for artifacts that help humans act. It should produce documents that a new teammate, future the owner, or post-compaction agent can hand to a human operator without needing the original conversation.
+This skill is deliberately optimized for artifacts that help humans act. It should produce documents that a new teammate, the future user, or post-compaction agent can hand to a human operator without needing the original conversation.
 
-The OpenClaw source structure is intentional: lightweight enough to ship fast, strict enough that operating knowledge survives compaction, delegation, reviewer drift, and human memory loss. Do not over-sanitize it into generic documentation advice.
+The user-built source structure is intentional: lightweight enough to ship fast, strict enough that operating knowledge survives compaction, delegation, reviewer drift, and human memory loss. Do not over-sanitize it into generic documentation advice.
 
 For agent-runtime skills, tool SOPs, progressive-disclosure design, tool permissions, eval cases, and stop/ask/escalate behavior, use `methodical-hermes-skill-tool-builder` instead.
 
@@ -31,7 +31,7 @@ For agent-runtime skills, tool SOPs, progressive-disclosure design, tool permiss
 Use this skill when:
 
 - The user asks for a playbook, SOP, operating standard, protocol, checklist, or repeatable workflow meant for humans.
-- Existing notes, transcripts, OpenClaw artifacts, wiki material, or chat context need to become a clean human-followable operating artifact.
+- Existing notes, transcripts, user-built source artifacts, wiki material, or chat context need to become a clean human-followable operating artifact.
 - A human team needs day-one-ready instructions, principles, cadence, quality checks, or a review rubric.
 - A draft human-facing playbook or SOP needs to be scored for clarity, completeness, safety, and maintainability.
 
@@ -40,7 +40,7 @@ Do not use this for:
 - Agent-native skill/tool SOP creation by itself; use `methodical-hermes-skill-tool-builder`.
 - One-off answers that do not create durable operating knowledge.
 - Public publishing checks by themselves; load `thorough-hermes-skill-publishing` for private-to-public release safety.
-- File movement or workspace cleanup by itself; load `tidy-hermes-workspace-hygiene` for routing and git discipline.
+- File movement or workspace cleanup by itself; use `tidy-hermes-workspace-hygiene`. If creating/saving a playbook, SOP, template, or review artifact as a file, load tidy in addition because Hermes is about to create durable files.
 
 ## North Star Principles
 
@@ -119,7 +119,7 @@ metadata:
 **Objective:** One sentence. What does this playbook achieve?
 **Owner:** Who maintains and improves it.
 **Executor:** Optional. Who runs the process and reports gaps. Skip if Owner is also Executor.
-**Reviewer:** Who inspects outcomes. Usually the owner for important operating standards.
+**Reviewer:** Who inspects outcomes. Usually the user for important operating standards.
 **Review:** Review frequency. Quarterly minimum for important playbooks.
 
 ---
@@ -163,9 +163,8 @@ This is where scripts, templates, checklists, and named frameworks live. If the 
 - SOPs, checklists, scripts, or templates that support the playbook
 - Write `None yet` if none exist
 
-## Changelog
+## Change History
 
-Append-only. Never delete or rewrite prior entries.
 
 - 1.0 — YYYY-MM-DD — Initial release.
 ```
@@ -193,7 +192,7 @@ A human-facing Playbook is not done until:
 - [ ] Supporting SOPs/templates are listed or explicitly absent.
 - [ ] At least 3 practical failure modes are included.
 - [ ] Review cadence is explicit and realistic.
-- [ ] Changelog is append-only.
+- [ ] Change history is append-only and stored in the right place for the artifact type.
 - [ ] The artifact is not a raw transcript or unprocessed external doc dump.
 
 ## Standard Human SOP Standard
@@ -241,9 +240,8 @@ Copy-paste artifacts this SOP produces or uses. Omit only if genuinely none.
 - [ ] Outputs and verification are explicit.
 - [ ] Parent playbook or related artifact is updated if needed.
 
-## Changelog
+## Change History
 
-Append-only. Never delete or rewrite prior entries.
 
 - 1.0 — YYYY-MM-DD — Initial release. <Context for why it earned an SOP.>
 ```
@@ -275,13 +273,13 @@ Append-only. Never delete or rewrite prior entries.
 
 5. **Draft for the general case.** Name for durable scope, not the current narrow incident. Pressure-test: would this name still work if the tool changed, the team doubled, or the use case expanded?
 
-6. **Keep the structure tight.** Default to the defined sections. If something does not fit, add it only when necessary, flag it in review notes, explain why the template needs to evolve, and log the change in the changelog.
+6. **Keep the structure tight.** Default to the defined sections. If something does not fit, add it only when necessary, flag it in review notes, explain why the template needs to evolve, and log the change in the artifact's change history.
 
 7. **Make it human-operable.** Use concrete steps, decision points, expected outputs, examples, templates, and checklists. If the operator cannot copy/paste or directly follow something concrete, the SOP is probably still too theoretical.
 
 8. **Review.** Run the Human Playbook/SOP Review Protocol below. For lightweight SOPs, the quick self-check is enough for v1.0, but schedule full polish.
 
-9. **Link and checkpoint.** Link from the parent playbook’s Linked SOPs/Templates section. If the artifact lives in a git-controlled workspace, commit the parent + child updates together after validation.
+9. **Link and checkpoint.** If the artifact will be saved to disk, load `tidy-hermes-workspace-hygiene` before writing so Hermes routes it correctly and does not create orphan files. Link from the parent playbook’s Linked SOPs/Templates section. If the artifact lives in a git-controlled workspace, commit the parent + child updates together after validation.
 
 10. **Feed back.** Did you learn a new pattern, failure mode, or quality bar during this build? Update the parent playbook, not just the SOP. Learnings in the parent help every future SOP. If nothing new was learned, skip this step.
 
@@ -310,7 +308,7 @@ Use only when the process is small, low-risk, mechanical, time-sensitive, or sti
 
 - What to watch for.
 
-## Changelog
+## Change History
 
 - 1.0 — YYYY-MM-DD — Created fast-track. <Context>.
 ```
@@ -371,7 +369,7 @@ Run this before spawning adversarial review.
 - [ ] Procedure has numbered steps a stranger could follow.
 - [ ] Templates/Scripts/Checklists included when applicable.
 - [ ] Quality Check has concrete verification items.
-- [ ] Changelog exists and is append-only.
+- [ ] Change history exists and is append-only.
 
 **Playbook:**
 
@@ -456,7 +454,7 @@ Interpretation:
 
 If the reviewer misses two consecutive reviews, the Owner escalates, names the blocker, or marks the artifact abandoned/provisional. Review cadence is mandatory, not aspirational.
 
-Root-standard exception: this standard itself should receive direct human review from the owner before being treated as fully authoritative, because it governs the review loop and can otherwise grade its own logic.
+Root-standard exception: this standard itself should receive direct human review from the user before being treated as fully authoritative, because it governs the review loop and can otherwise grade its own logic.
 
 ## Common Failure Modes
 
@@ -482,7 +480,7 @@ Root-standard exception: this standard itself should receive direct human review
 
 11. **Reviewer becomes bottleneck or ghost.** If no review happens, mark the artifact provisional. If two consecutive reviews are missed, escalate or mark abandoned/provisional.
 
-12. **Changelog history gets rewritten.** Changelogs are append-only. Do not hide why decisions changed.
+12. **Change history gets rewritten.** Change history is append-only. Do not hide why decisions changed.
 
 13. **Process heaviness kills momentum.** Use lightweight drafts for low-risk early capture, then polish within 7 days.
 
@@ -507,7 +505,7 @@ Before calling a human Playbook/SOP done:
 - [ ] Name survives scope expansion.
 - [ ] Extra sections are absent or explicitly flagged/justified.
 - [ ] Failure modes/gotchas are practical and specific.
-- [ ] Changelog exists and is append-only.
+- [ ] Change history exists and is append-only.
 - [ ] Quality checks verify real outcomes.
 - [ ] Score sheet or review summary is saved for important artifacts.
 - [ ] Related parent playbooks or SOPs are updated.
@@ -518,15 +516,8 @@ Before calling a human Playbook/SOP done:
 
 ## Support Files
 
-- `references/openclaw-source-comparison-2026-05-27.md` — comparison of the original OpenClaw Playbook Creation / SOP Creation / Review Protocol materials against this Hermes skill; records which OpenClaw details were restored in v1.1.
+- `references/source-comparison-2026-05-27.md` — comparison of the original source Playbook Creation / SOP Creation / Review Protocol materials against this Hermes skill; records which source details were restored in v1.1.
 
 ## Source Lineage
 
-Forked from `disciplined-hermes-playbook-sop-standard` on 2026-05-27 and deliberately narrowed to human-facing Playbook/SOP creation. Adapted from OpenClaw's Playbook Creation playbook, SOP Creation SOP, SOP Templates, and Review Protocol.
-
-Version 1.1 restored high-value OpenClaw structure and wording that should not have been compressed away: Owner/Reviewer/Review accountability, copy-paste executability, Capture/Interview/Camcorder source methods, no-extra-sections-unless-flagged, name-survives-scope-expansion pressure test, append-only changelog, quick self-checks, saved score sheets, lightweight 7-day polish, and reviewer-bottleneck escalation.
-
-## Changelog
-
-- 1.1.1 — 2026-05-27 — Added explicit relationship between Playbooks, SOPs, Tool SOPs, Review Protocols, and Hermes skills. Why: the owner clarified that Playbooks/SOPs are skill-shaped repeatable formats, but Tool SOPs are mainly agent-facing and should route to the agent-runtime builder rather than being blended into human-facing documentation standards.
-- 1.1.0 — 2026-05-27 — Restored high-value OpenClaw structure and narrowed this skill to human-facing Playbook/SOP creation. Why: OpenClaw source materials carried useful Owner/Reviewer/Review accountability, capture methods, templates, quick checks, and review-loop structure that should not be compressed away.
+Forked from `disciplined-hermes-playbook-sop-standard` on 2026-05-27 and deliberately narrowed to human-facing Playbook/SOP creation. Adapted from source Playbook Creation, SOP Creation, SOP Templates, and Review Protocol materials.

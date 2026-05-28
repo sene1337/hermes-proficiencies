@@ -1,6 +1,6 @@
-# File Routing SOP (OpenClaw Reference)
+# File Routing SOP (Source Reference)
 
-> **Source:** ~/.openclaw/workspace/ops/playbooks/workspace/sops/file-routing.md  
+> **Source:** <private source path>/workspace/sops/file-routing.md  
 > **Status:** Reference copy for Hermes workspace-hygiene skill
 
 ## Core Rule

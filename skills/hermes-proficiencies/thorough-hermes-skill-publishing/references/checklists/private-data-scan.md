@@ -6,7 +6,7 @@ Use this checklist before sharing, packaging, or publishing a Hermes skill.
 
 Look for:
 
-- local paths: `/Users/`, `/home/`, absolute project paths, private knowledge-base/wiki paths;
+- local paths: `/Users/`, `/home/`, absolute project paths, private iCloud/wiki paths;
 - profile-specific Hermes paths: memories, logs, private cron output, runtime-only assumptions;
 - personal identifiers: names, family members, account handles, email addresses, phone numbers;
 - chat/platform identifiers: Telegram/Discord IDs, topic IDs, webhook URLs;
@@ -32,10 +32,10 @@ For each finding, choose one:
 
 - **Remove** if irrelevant to public use.
 - **Parameterize** with placeholders like `<HERMES_HOME>`, `<YOUR_REPO>`, `<CHAT_ID>`.
-- **Move to private reference** if it is useful only for the owner/local runtime.
+- **Move to private reference** if it is useful only for user/local runtime.
 - **Mark private-only** if the skill is intentionally not publishable.
 - **Block publish** if a secret, credential, or sensitive personal detail is present.
 
 ## Public Artifact Rule
 
-A public/shareable skill should not mention the owner, the local user, private repo names, chat IDs, profile-specific paths, daily logs, memory files, or local-machine architecture unless the entire artifact is intentionally labeled as local/private and is not being published.
+A public/shareable skill should not mention the user, private repo names, chat IDs, profile-specific paths, daily logs, memory files, or local-machine architecture unless the entire artifact is intentionally labeled as local/private and is not being published.
