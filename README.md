@@ -2,6 +2,8 @@
 
 Public, shareable **Hermes Agent proficiency skills**: class-level operating attributes that teach Hermes *how to work*, not just which tool to call.
 
+These proficiencies are designed to keep an agent useful under real operating pressure: turning messy context into repeatable human playbooks/SOPs, building agent-runtime Tool SOP skills with guardrails, publishing skills without leaking private data, and enforcing workspace hygiene so the agent routes files deliberately instead of scattering drafts, temp files, duplicated skill copies, or destructive changes across the hard drive.
+
 ## Why these exist
 
 These skills came out of a design problem: Playbooks, SOPs, Tool SOPs, Review Protocols, and Hermes Skills are all repeatable operating artifacts, but they serve different operators.
