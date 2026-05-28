@@ -4,7 +4,7 @@ A small set of installable skills that teach Hermes better operating habits.
 
 A fresh Hermes install can work, but it does not always know how you want work organized. If you let an agent run at full speed without guidance, it can scatter files across the hard drive, create duplicate folders, write drafts into temporary directories, forget why it made a change, or publish private runtime assumptions into a public repo.
 
-These skills are meant to fix that baseline problem. They give Hermes a practical starting layer for workspace hygiene, skill creation, publishing safety, and human-readable playbooks/SOPs.
+These skills are meant to fix that baseline problem. They give Hermes a practical starting layer for workspace hygiene, skill creation, publishing safety, human-readable playbooks/SOPs, decision discipline, and continuous improvement.
 
 ## Why I created this
 
@@ -18,10 +18,14 @@ This repo is my attempt to give Hermes a better default operating system for tha
 
 - choose a real destination before creating files;
 - initialize or respect git so changes are reversible;
-- commit and log decisions in a way a human can audit later;
+- own cleanup instead of turning the user into a git-status reporter;
+- make small decisions without interrupting the user;
+- bring real options and a recommendation when a decision is above the agent's authority;
+- preserve the reason behind important decisions so they do not get reopened a week later;
 - keep private/local behavior separate from public/shareable artifacts;
 - build skills using repeatable patterns instead of one-off prompts;
-- write playbooks and SOPs that humans can actually follow.
+- write playbooks and SOPs that humans can actually follow;
+- run improvement loops that change behavior instead of creating process theater.
 
 The goal is simple: move fast without letting the agent turn your workspace into a junk drawer.
 
@@ -34,6 +38,30 @@ This is the "do not make a mess" skill.
 It teaches Hermes to route files deliberately, check git before significant edits, avoid orphaned artifacts, respect protected paths, and leave behind enough evidence that you can see what happened. It is especially useful when an agent is creating lots of files, running subagents, editing skills, or working across multiple folders.
 
 The practical benefit: less hard drive clutter, fewer mystery files, safer changes, and a real rollback path through git.
+
+### `decisive-hermes-decision-communication`
+
+This is the decision-discipline skill.
+
+It teaches Hermes to stop asking vague questions when it should be making a recommendation. The default pattern is 1-3-1: one clear problem, three real options, one recommendation. Hermes should use that thinking internally for small choices and act without bothering the user. For bigger choices, it should bring the user a real fork in the road, not a pile of half-formed questions.
+
+It also helps preserve the reason behind decisions. That matters because humans forget too. A week later, someone should be able to ask "why did we choose this?" and get a useful answer instead of reopening the whole debate.
+
+The practical benefit: fewer interruptions, better recommendations, and a decision record that keeps future work moving.
+
+### `mindful-hermes-continuous-improvement`
+
+This is the improvement-loop skill.
+
+It came from a simple problem: agents can log mistakes forever without actually getting better. This skill keeps the loop honest:
+
+```text
+mistake -> root cause -> fix -> verify it stuck
+```
+
+It owns the recurring feedback loops around Hermes: regression capture, capability gaps, decision-miner review queues, file-janitor findings, cron health, and weekly review cards. It does not recreate things Hermes already does well, like session search, memory, skills, cron, or curator. It uses those native parts and adds inspection so they produce changed behavior.
+
+The practical benefit: fewer repeated mistakes, better follow-through after corrections, and less process that exists only to make everyone feel organized.
 
 ### `thorough-hermes-skill-publishing`
 
@@ -65,14 +93,16 @@ The practical benefit: better team docs, less hidden context, and more consisten
 
 ## How the pieces fit together
 
-These skills separate four jobs that agents often blur together:
+These skills separate six jobs that agents often blur together:
 
 - Workspace hygiene: where files go, how git is used, how changes stay reversible.
+- Decision discipline: when Hermes should decide, when it should recommend, and how it preserves the reasoning.
+- Continuous improvement: how mistakes become behavior changes instead of notes nobody reads.
 - Skill building: how Hermes learns a repeatable agent behavior or tool workflow.
 - Publishing safety: how private working material becomes safe public material.
 - Human playbooks/SOPs: how agent-assisted knowledge becomes something people can follow.
 
-Keeping those jobs separate matters. A Tool SOP for an agent is not the same thing as a human SOP. A working private skill is not automatically publishable. A file created by an agent is not "organized" just because it exists somewhere on disk.
+Keeping those jobs separate matters. A Tool SOP for an agent is not the same thing as a human SOP. A working private skill is not automatically publishable. A file created by an agent is not "organized" just because it exists somewhere on disk. A decision-quality skill should not own every recurring review cron just because decisions are involved; continuous improvement owns the loop, while the decision skill owns the quality bar.
 
 ## Repository layout
 
@@ -112,6 +142,18 @@ If you plan to publish skills publicly, add:
 thorough-hermes-skill-publishing
 ```
 
+If you want Hermes to make clearer recommendations and preserve decision rationale, add:
+
+```text
+decisive-hermes-decision-communication
+```
+
+If you want Hermes to maintain improvement loops instead of repeating the same mistakes, add:
+
+```text
+mindful-hermes-continuous-improvement
+```
+
 If you want Hermes to create or migrate reusable skills, add:
 
 ```text
@@ -132,7 +174,9 @@ helpful-hermes-human-playbook-sop-creator
 4. Public publishing needs its own review gate.
 5. Private/local tool knowledge and public/shareable guidance should not be mixed by accident.
 6. Human SOPs and agent Tool SOPs need different formats because they have different operators.
-7. Important skills should be reviewed and improved after real use.
+7. Important decisions should carry enough rationale that a future human can understand why they were made.
+8. Improvement loops should change behavior, not just create more records.
+9. Important skills should be reviewed and improved after real use.
 
 ## License
 

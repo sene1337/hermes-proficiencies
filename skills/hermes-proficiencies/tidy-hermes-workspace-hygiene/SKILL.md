@@ -1,7 +1,7 @@
 ---
 name: tidy-hermes-workspace-hygiene
 description: Use when Hermes is about to create, edit, move, delete, sync, route, publish, or leave behind durable files. Gives Hermes the tidy proficiency for git awareness, immediate file routing, and workspace hygiene so the agent does not make a mess.
-version: 1.11.1
+version: 1.11.4
 author: Hermes Agent
 license: MIT
 metadata:
@@ -21,6 +21,7 @@ Prevent the agent from scattering files, performing destructive operations witho
 - Git is the primary safety net. Never rely on "I can undo it later."
 - Route files at creation time. Never create orphans with the intention of filing them later.
 - Respect existing systems. Follow the user's documented workspace rules unless explicitly told otherwise.
+- Own the cleanup. The point is not to become a git-status reporter to the user; it is to keep the workspace clean, or present one concrete cleanup decision when autonomous cleanup is unsafe.
 - Ask on ambiguity. When destination or risk level is unclear, stop and clarify.
 
 ## When to Use
@@ -89,7 +90,9 @@ Hermes must stop immediately when a destructive approval is denied, a protected 
 
 ### Expected Outputs and Verification
 
-For every file-affecting task, the final answer should include the evidence appropriate to the risk level: touched paths, workspace classification, git root/status or no-git warning, edit method, safety/approval decision, verification performed, and any deferred cleanup or taxonomy decision. Do not claim git/source/runtime validation unless it was actually checked in this turn or already exists in visible context.
+For every file-affecting task, the final answer should include the evidence appropriate to the risk level: touched paths, workspace classification, edit method, safety/approval decision, verification performed, and any deferred cleanup or taxonomy decision. Include git evidence only when it is directly useful to the user's decision or confidence; do not turn final replies into raw git-status reports. If unrelated residue is found, either clean/commit/revert it when safe and in scope, or state one concrete next action/decision — do not dump a dirty-file list on the user as if ownership has transferred to them.
+
+Do not claim git/source/runtime validation unless it was actually checked in this turn or already exists in visible context.
 
 ## Mode Router
 
@@ -167,12 +170,14 @@ Support files are the deeper layers of this skill. Load only the selected mode p
 
 - Git is the primary safety net; check git state before significant edits.
 - Route files at creation time; no durable orphan files in cwd/temp.
+- Clean as part of the task. Do not offload raw dirty-worktree status to the user; summarize only what matters and either resolve safe residue or ask for one scoped cleanup decision.
 - Treat installed skills and skill source repos as high-impact workspaces: identify source of truth, inspect diffs, and avoid source/runtime drift.
 - Use public/export staging only for publish-clean copies, packages, and release work; do not duplicate every private/local skill into public-bound workspaces.
 - Choose runtime skill categories deliberately; avoid catch-all buckets unless explicitly accepted as temporary local policy.
 - Treat protected knowledge bases as read-only unless exact write scope is approved.
 - Put destructive-operation reason, exact path/scope, and safety plan in the approval request.
 - Use native Hermes tools for memory/todos/file reads/searches/patches where possible.
+- Do not dump developer-style dirty-worktree caveats on the user as if cleanup is their responsibility. If residue is agent-created, clean/commit/revert it; if ownership is unclear, inspect enough to offer one concrete cleanup action or decision.
 
 ## Supporting SOPs / Linked Skills
 

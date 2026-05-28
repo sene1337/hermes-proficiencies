@@ -1,7 +1,7 @@
 ---
 name: methodical-hermes-skill-tool-builder
 description: Use when creating, converting, or reviewing Hermes agent skills, Tool SOPs, or agent-runtime skill procedures. Guides Hermes to build reliable skills with invocation contracts, progressive disclosure, tool boundaries, guardrails, evals, and verification.
-version: 1.2.5
+version: 1.2.6
 author: Hermes Agent
 license: MIT
 metadata:
@@ -172,6 +172,8 @@ Focused SOPs = exact procedures
 Tool SOPs = minimal executable do/don't/verify instructions
 ```
 
+When source artifacts cross domains, preserve ownership boundaries instead of putting every related procedure into the skill that first mentions it. Decision-quality rules belong in a decision skill; recurring inspection/mining crons belong in a continuous-improvement skill; file-residue detection belongs in a workspace-hygiene skill. Cross-link skills when a loop uses another skill's quality standard, but do not make the quality-standard skill own the operational cron unless that is truly its class of work.
+
 ## Minimum Agent Skill Shape
 
 For normal Agent Skills, use `templates/agent-skill.md` when drafting. Minimum runtime quality bar:
@@ -276,6 +278,7 @@ Top failures to prevent on the default path:
 11. **Passive curation under tool constraints.** Fix: when the user limits the curation pass to memory and skill-management tools, still patch the loaded/reusable skill through `skill_manage`; report deferred git/diff/validation instead of doing nothing or attempting denied tools.
 12. **Tool-surface leakage during curation.** Fix: if the prompt says only memory and skill-management tools are allowed, do not call `todo`, `session_search`, shell/git/file validation, or other helper tools even if they would normally improve process discipline. Use visible context and make the smallest safe skill patch.
 13. **Post-compaction assumption.** Fix: after compaction/context loss, do not infer missing numbered steps from adjacent topics. Re-anchor from visible context and allowed recovery tools; if exact step/scope is still uncertain, ask the user before any file edit, commit, publish/delete action, or completion claim.
+14. **Cross-domain ownership blur.** Fix: when a source playbook references another loop, decide which class owns the behavior before patching. Keep domain-quality rules in the domain skill and recurring inspection/mining/feedback crons in the continuous-improvement skill, with cross-links rather than duplicated ownership.
 
 Use `references/failure-modes.md` for the full checklist.
 

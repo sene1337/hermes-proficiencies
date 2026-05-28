@@ -80,11 +80,12 @@ Needs user review:
 
 ## Scheduled Janitor Pattern
 
-A nightly Hermes cron job should run this mode for workspaces where residue accumulates. The job is part of the tidy system: it should clean up obvious safe residue automatically, produce a concise durable report, and ask the user only for decisions that require escalation.
+A nightly Hermes cron job should run this mode for workspaces where residue accumulates. The job is part of the tidy system: it should clean up obvious safe residue automatically, produce a concise durable report, and ask the user only for decisions that require escalation. If the user explicitly asks to operationalize Tidy Hermes or says the janitor cron should exist, create or update the cron job now; do not merely document that a cron would be useful.
 
 For recurring janitor jobs:
 
 - run on a nightly cadence unless the user chooses another schedule;
+- prefer a quiet middle-of-the-night slot, at least 30 minutes away from other recurring crons;
 - keep the prompt stable and point it at one policy index/reference;
 - pin the exact scan scope in the job prompt or referenced policy file;
 - auto-tidy only clearly safe `scratch`, stale `reproducible`, and expired `review-staged` residue inside approved cleanup scope;
